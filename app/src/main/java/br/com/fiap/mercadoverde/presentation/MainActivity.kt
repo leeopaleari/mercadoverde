@@ -107,7 +107,7 @@ class MainActivity : ComponentActivity() {
                                         selected = selectedItemIndex == index,
                                         onClick = {
                                             selectedItemIndex = index
-                                            navController.navigate(item.route)
+                                            navController.navigate(route = item.route)
                                         },
                                         label = {
                                             Text(text = item.title)

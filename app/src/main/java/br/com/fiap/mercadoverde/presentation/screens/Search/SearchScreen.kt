@@ -1,9 +1,16 @@
 package br.com.fiap.mercadoverde.presentation.screens.Search
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 
 @Composable
 fun SearchScreen() {
-    Text(text = "SearchScren")
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Text(text = "SearchScren")
+    }
 }

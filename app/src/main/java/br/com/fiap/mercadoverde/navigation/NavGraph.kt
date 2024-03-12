@@ -8,7 +8,7 @@ import br.com.fiap.mercadoverde.presentation.screens.Cart.CartScreen
 import br.com.fiap.mercadoverde.presentation.screens.Home.HomeScreen
 import br.com.fiap.mercadoverde.presentation.screens.Profile.ProfileScreen
 import br.com.fiap.mercadoverde.presentation.screens.Search.SearchScreen
-import br.com.fiap.mercadoverde.ui.composables.ScreenContainer
+import br.com.fiap.mercadoverde.ui.common.ScreenContainer
 
 @Composable
 fun NavGraph(
@@ -16,24 +16,16 @@ fun NavGraph(
 ) {
     NavHost(navController = navController, startDestination = Route.HOME_SCREEN) {
         composable(Route.HOME_SCREEN) {
-            ScreenContainer {
-                HomeScreen()
-            }
+            HomeScreen()
         }
         composable(Route.SEARCH_SCREEN) {
-            ScreenContainer {
-                SearchScreen()
-            }
+            SearchScreen()
         }
         composable(Route.CART_SCREEN) {
-            ScreenContainer {
-                CartScreen()
-            }
+            CartScreen()
         }
         composable(Route.PROFILE_SCREEN) {
-            ScreenContainer {
-                ProfileScreen()
-            }
+            ProfileScreen()
         }
     }
 }

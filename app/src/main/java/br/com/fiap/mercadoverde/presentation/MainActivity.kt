@@ -1,10 +1,11 @@
 package br.com.fiap.mercadoverde.presentation
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
@@ -35,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
 import br.com.fiap.mercadoverde.navigation.NavGraph
 import br.com.fiap.mercadoverde.navigation.Route
+import br.com.fiap.mercadoverde.ui.theme.BgColor
 import br.com.fiap.mercadoverde.ui.theme.MercadoVerdeTheme
 import br.com.fiap.mercadoverde.ui.theme.PrimaryColor
 
@@ -47,7 +49,6 @@ data class BottomNavigationItem(
 )
 
 class MainActivity : ComponentActivity() {
-    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -90,6 +91,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     Scaffold(
+                        containerColor = BgColor,
                         bottomBar = {
                             NavigationBar(
                                 containerColor = Color.White,
@@ -124,8 +126,10 @@ class MainActivity : ComponentActivity() {
                                 }
                             }
                         }
-                    ) {
-                        NavGraph(navController = navController)
+                    ) { innerPadding ->
+                        Box(modifier = Modifier.padding(innerPadding)) {
+                            NavGraph(navController = navController)
+                        }
                     }
                 }
             }

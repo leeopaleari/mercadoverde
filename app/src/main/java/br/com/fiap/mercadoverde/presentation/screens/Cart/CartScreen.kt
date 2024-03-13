@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Card
 import androidx.compose.material3.OutlinedButton
@@ -102,17 +103,32 @@ fun CartScreen(navController: NavController) {
                                 .background(color = Color.White)
                                 .fillMaxWidth()
                                 .padding(8.dp)
-                                .height(50.dp)
+                                .height(50.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
-
-                            OutlinedButton(onClick = { /*TODO*/ }) {
-
+                            OutlinedButton(
+                                onClick = { /*TODO*/ },
+                                modifier = Modifier.weight(1f),
+                                contentPadding = PaddingValues(
+                                    4.dp
+                                ),
+                                border = BorderStroke(width = 0.dp, color = Color.White)
+                            ) {
+                                Text(text = "-", color = PrimaryColor)
                             }
 
-                            Text(text = "1")
+                            Text(text = "1", fontFamily = Inter, fontWeight = FontWeight.ExtraBold)
 
-                            OutlinedButton(onClick = { /*TODO*/ }) {
-
+                            OutlinedButton(
+                                onClick = { /*TODO*/ },
+                                modifier = Modifier.weight(1f),
+                                contentPadding = PaddingValues(
+                                    0.dp
+                                ),
+                                border = BorderStroke(width = 0.dp, color = Color.White)
+                            ) {
+                                Text(text = "+", color = PrimaryColor)
                             }
 
                         }

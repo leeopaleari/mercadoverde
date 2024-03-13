@@ -13,7 +13,7 @@ import br.com.fiap.mercadoverde.presentation.screens.Search.SearchScreen
 fun NavGraph(
     navController: NavHostController
 ) {
-    NavHost(navController = navController, startDestination = Route.HOME_SCREEN) {
+    NavHost(navController = navController, startDestination = Route.CART_SCREEN) {
         composable(
             route = Route.HOME_SCREEN,
         ) {

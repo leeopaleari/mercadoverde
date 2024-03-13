@@ -25,14 +25,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import br.com.fiap.mercadoverde.navigation.NavGraph
 import br.com.fiap.mercadoverde.navigation.Route
@@ -53,9 +53,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MercadoVerdeTheme {
-                val items = listOf(
+                val navItems = listOf(
                     BottomNavigationItem(
-                        title = "Home",
+                        title = "Início",
                         route = Route.HOME_SCREEN,
                         selectedIcon = Icons.Filled.Home,
                         unselectedIcon = Icons.Outlined.Home
@@ -80,10 +80,6 @@ class MainActivity : ComponentActivity() {
                     ),
                 )
 
-                var selectedItemIndex by rememberSaveable {
-                    mutableStateOf(0)
-                }
-
                 val navController = rememberNavController()
 
                 Surface(
@@ -102,19 +98,30 @@ class MainActivity : ComponentActivity() {
                                     shadowElevation = 20f
                                 }
                             ) {
-                                items.forEachIndexed { index, item ->
+                                val navBackStackEntry by navController.currentBackStackEntryAsState()
+                                val currentDestination = navBackStackEntry?.destination
+
+                                navItems.forEach { item ->
+                                    var isCurrentDestinationEqualRoute =
+                                        currentDestination?.hierarchy?.any { it.route == item.route }
+
                                     NavigationBarItem(
-                                        selected = selectedItemIndex == index,
+                                        selected = isCurrentDestinationEqualRoute == true,
                                         onClick = {
-                                            selectedItemIndex = index
-                                            navController.navigate(route = item.route)
+                                            navController.navigate(route = item.route) {
+                                                popUpTo(navController.graph.findStartDestination().id) {
+                                                    saveState = true
+                                                }
+                                                launchSingleTop = true
+                                                restoreState = true
+                                            }
                                         },
                                         label = {
                                             Text(text = item.title)
                                         },
                                         icon = {
                                             Icon(
-                                                imageVector = if (index == selectedItemIndex) item.selectedIcon else item.unselectedIcon,
+                                                imageVector = if (isCurrentDestinationEqualRoute == true) item.selectedIcon else item.unselectedIcon,
                                                 contentDescription = item.title
                                             )
                                         },

@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import br.com.fiap.mercadoverde.R
 import br.com.fiap.mercadoverde.presentation.screens.Home.Category
 
 @Composable

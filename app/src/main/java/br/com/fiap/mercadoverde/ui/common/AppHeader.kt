@@ -25,7 +25,7 @@ import br.com.fiap.mercadoverde.R
 import br.com.fiap.mercadoverde.navigation.Route
 
 @Composable
-fun AppHeader(navController: NavController) {
+fun AppHeader(navController: NavController, shouldRenderSearch: Boolean) {
     val currentRoute = navController.currentBackStackEntry?.destination?.route
 
     Box(
@@ -67,18 +67,20 @@ fun AppHeader(navController: NavController) {
         }
     }
 
-    Box(modifier = Modifier.padding(top = 4.dp, start = 16.dp, end = 16.dp)) {
-        CustomTextField(
-            leadingIcon = {
-                Icon(
-                    painter = painterResource(id = R.drawable.baseline_search_24),
-                    contentDescription = "icone lupa",
-                    tint = Color(0xFF49454F)
-                )
-            },
-            trailingIcon = null,
-            fontSize = 14.sp,
-            placeholderText = "Buscar por nome...",
-        )
+    if(shouldRenderSearch) {
+        Box(modifier = Modifier.padding(top = 4.dp, start = 16.dp, end = 16.dp)) {
+            CustomTextField(
+                leadingIcon = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.baseline_search_24),
+                        contentDescription = "icone lupa",
+                        tint = Color(0xFF49454F)
+                    )
+                },
+                trailingIcon = null,
+                fontSize = 14.sp,
+                placeholderText = "Buscar por nome...",
+            )
+        }
     }
 }

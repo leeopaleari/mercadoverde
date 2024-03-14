@@ -25,6 +25,7 @@ import br.com.fiap.mercadoverde.ui.theme.Inter
 import br.com.fiap.mercadoverde.ui.theme.TextColor
 
 data class Product(
+    val id: String,
     val nome: String,
     val preco: String,
     val avaliacao: Float,
@@ -40,12 +41,12 @@ data class Category(
 fun HomeScreen(navController: NavController) {
 
     val productList = listOf<Product>(
-        Product("Laranja", "1,00", 3.3f, R.drawable.laranja),
-        Product("Kiwi", "2,00", 3.3f, R.drawable.kiwi),
-        Product("Pimentao", "5,50", 3.3f, R.drawable.pimentao),
-        Product("Limão Siciliano", "4,30", 3.3f, R.drawable.limao_siciliano),
-        Product("Alface", "2,00", 3.3f, R.drawable.alface),
-        Product("Cebola", "3,30", 3.3f, R.drawable.cebola),
+        Product("01","Laranja", "1,00", 3.3f, R.drawable.laranja),
+        Product("02", "Kiwi", "2,00", 3.3f, R.drawable.kiwi),
+        Product("03", "Pimentao", "5,50", 3.3f, R.drawable.pimentao),
+        Product("04", "Limão Siciliano", "4,30", 3.3f, R.drawable.limao_siciliano),
+        Product("05","Alface", "2,00", 3.3f, R.drawable.alface),
+        Product("06", "Cebola", "3,30", 3.3f, R.drawable.cebola),
     )
 
     val categoryList = listOf<Category>(
@@ -58,7 +59,7 @@ fun HomeScreen(navController: NavController) {
         modifier = Modifier
             .fillMaxSize()
     ) {
-        AppHeader(navController)
+        AppHeader(navController, true)
         Spacer(modifier = Modifier.height(12.dp))
 
         LazyRow(

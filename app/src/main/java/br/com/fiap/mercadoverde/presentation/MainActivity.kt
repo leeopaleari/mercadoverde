@@ -36,9 +36,10 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import br.com.fiap.mercadoverde.navigation.NavGraph
 import br.com.fiap.mercadoverde.navigation.Route
-import br.com.fiap.mercadoverde.ui.theme.BgColor
-import br.com.fiap.mercadoverde.ui.theme.MercadoVerdeTheme
-import br.com.fiap.mercadoverde.ui.theme.PrimaryColor
+import br.com.fiap.mercadoverde.presentation.theme.BgColor
+import br.com.fiap.mercadoverde.presentation.theme.MercadoVerdeTheme
+import br.com.fiap.mercadoverde.presentation.theme.PrimaryColor
+import dagger.hilt.android.AndroidEntryPoint
 
 data class BottomNavigationItem(
     val title: String,
@@ -48,6 +49,7 @@ data class BottomNavigationItem(
     val badgeCount: Int? = null
 )
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

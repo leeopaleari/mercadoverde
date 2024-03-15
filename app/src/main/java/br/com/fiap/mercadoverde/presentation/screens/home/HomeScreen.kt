@@ -1,4 +1,4 @@
-package br.com.fiap.mercadoverde.presentation.screens.Home
+package br.com.fiap.mercadoverde.presentation.screens.home
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,23 +13,27 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import br.com.fiap.mercadoverde.R
-import br.com.fiap.mercadoverde.presentation.screens.Home.composables.CategoryCard
-import br.com.fiap.mercadoverde.presentation.screens.Home.composables.ProductCard
-import br.com.fiap.mercadoverde.ui.common.AppHeader
-import br.com.fiap.mercadoverde.ui.theme.Inter
-import br.com.fiap.mercadoverde.ui.theme.TextColor
-
-data class Product(
-    val nome: String,
-    val preco: String,
-    val avaliacao: Float,
-    val imagem: Int
-)
+import br.com.fiap.mercadoverde.data.repository.ProductRepositoryImpl
+import br.com.fiap.mercadoverde.presentation.screens.home.composables.CategoryCard
+import br.com.fiap.mercadoverde.presentation.screens.home.composables.ProductCard
+import br.com.fiap.mercadoverde.presentation.shared.AppHeader
+import br.com.fiap.mercadoverde.presentation.theme.Inter
+import br.com.fiap.mercadoverde.presentation.theme.TextColor
+import br.com.fiap.mercadoverde.presentation.viewmodels.CartViewModel
+import br.com.fiap.mercadoverde.presentation.viewmodels.HomeViewModel
+import kotlinx.coroutines.launch
 
 data class Category(
     val nome: String,
@@ -37,28 +41,24 @@ data class Category(
 )
 
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(
+    navController: NavController,
+    homeViewModel: HomeViewModel = hiltViewModel(),
+    cartViewModel: CartViewModel = hiltViewModel()
+) {
+    val coroutineScope = rememberCoroutineScope()
 
-    val productList = listOf<Product>(
-        Product("Laranja", "1,00", 3.3f, R.drawable.laranja),
-        Product("Kiwi", "2,00", 3.3f, R.drawable.kiwi),
-        Product("Pimentao", "5,50", 3.3f, R.drawable.pimentao),
-        Product("Limão Siciliano", "4,30", 3.3f, R.drawable.limao_siciliano),
-        Product("Alface", "2,00", 3.3f, R.drawable.alface),
-        Product("Cebola", "3,30", 3.3f, R.drawable.cebola),
-    )
+    val categoryList by homeViewModel.categoryList.observeAsState(initial = emptyList())
+    val productList by homeViewModel.productList.observeAsState(initial = emptyList())
 
-    val categoryList = listOf<Category>(
-        Category("Caules", R.drawable.caules),
-        Category("Frutas", R.drawable.frutas),
-        Category("Legumes", R.drawable.legumes),
-    )
+
+    val cartItems by cartViewModel.cartItems.observeAsState()
 
     Column(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        AppHeader(navController)
+        AppHeader(navController, cartItems!!.size)
         Spacer(modifier = Modifier.height(12.dp))
 
         LazyRow(
@@ -91,7 +91,13 @@ fun HomeScreen(navController: NavController) {
             )
         ) {
             items(productList) {
-                ProductCard(product = it)
+                ProductCard(product = it, onSelectProduct = {
+                    coroutineScope.launch {
+                        cartViewModel.addItemToCart(it)
+                    }
+                }, selected = cartItems!!.any { selectedItem ->
+                    selectedItem.id === it.id
+                })
             }
         }
     }

@@ -1,4 +1,4 @@
-package br.com.fiap.mercadoverde.presentation.screens.Home.composables
+package br.com.fiap.mercadoverde.presentation.screens.home.composables
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -20,20 +20,26 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import br.com.fiap.mercadoverde.presentation.screens.Home.Product
-import br.com.fiap.mercadoverde.ui.theme.Inter
-import br.com.fiap.mercadoverde.ui.theme.PrimaryColor
-import br.com.fiap.mercadoverde.ui.theme.TextColor
-import br.com.fiap.mercadoverde.ui.theme.TextLightColor
+import br.com.fiap.mercadoverde.domain.models.Product
+import br.com.fiap.mercadoverde.presentation.theme.Inter
+import br.com.fiap.mercadoverde.presentation.theme.PrimaryColor
+import br.com.fiap.mercadoverde.presentation.theme.TextColor
+import br.com.fiap.mercadoverde.presentation.theme.TextLightColor
+import br.com.fiap.mercadoverde.utils.formatCurrency
 
 
 @Composable
-fun ProductCard(product: Product) {
+fun ProductCard(
+    product: Product,
+    onSelectProduct: () -> Unit,
+    selected: Boolean = false
+) {
+
     Card(
         modifier = Modifier
             .border(
-                width = 1.dp,
-                color = Color(0xFFD1D1D1),
+                width = if (selected) 4.dp else 1.dp,
+                color = if (selected) PrimaryColor else Color(0xFFD1D1D1),
                 shape = RoundedCornerShape(10)
             ),
         colors = CardColors(
@@ -42,7 +48,10 @@ fun ProductCard(product: Product) {
             disabledContainerColor = Color.Gray,
             disabledContentColor = Color.Gray
         ),
-        shape = RoundedCornerShape(20.dp)
+        shape = RoundedCornerShape(20.dp),
+        onClick = {
+            onSelectProduct()
+        }
     ) {
         Column(
             modifier = Modifier.padding(12.dp),
@@ -78,7 +87,7 @@ fun ProductCard(product: Product) {
 
             Text(text = product.nome, color = TextLightColor, fontFamily = Inter, fontSize = 14.sp)
             Text(
-                text = "R$ ${product.preco}",
+                text = formatCurrency(product.preco),
                 color = TextColor,
                 fontFamily = Inter,
                 fontSize = 24.sp,

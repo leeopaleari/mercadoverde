@@ -1,4 +1,4 @@
-package br.com.fiap.mercadoverde.ui.common
+package br.com.fiap.mercadoverde.presentation.shared
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -26,7 +26,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import br.com.fiap.mercadoverde.ui.theme.Inter
+import br.com.fiap.mercadoverde.presentation.theme.Inter
 
 @Composable
 fun CustomTextField(

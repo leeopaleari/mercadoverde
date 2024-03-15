@@ -1,4 +1,4 @@
-package br.com.fiap.mercadoverde.ui.theme
+package br.com.fiap.mercadoverde.presentation.theme
 
 import android.app.Activity
 import android.os.Build

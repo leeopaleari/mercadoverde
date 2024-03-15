@@ -4,10 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import br.com.fiap.mercadoverde.presentation.screens.Cart.CartScreen
-import br.com.fiap.mercadoverde.presentation.screens.Home.HomeScreen
-import br.com.fiap.mercadoverde.presentation.screens.Profile.ProfileScreen
-import br.com.fiap.mercadoverde.presentation.screens.Search.SearchScreen
+import br.com.fiap.mercadoverde.presentation.screens.cart.CartScreen
+import br.com.fiap.mercadoverde.presentation.screens.home.HomeScreen
+import br.com.fiap.mercadoverde.presentation.screens.profile.ProfileScreen
+import br.com.fiap.mercadoverde.presentation.screens.search.SearchScreen
 
 @Composable
 fun NavGraph(
@@ -16,14 +16,14 @@ fun NavGraph(
     NavHost(navController = navController, startDestination = Route.CART_SCREEN) {
         composable(
             route = Route.HOME_SCREEN,
-        ) {
+        ) {entry ->
             HomeScreen(navController)
         }
 
         composable(
             route = Route.SEARCH_SCREEN,
         ) {
-            SearchScreen()
+            SearchScreen(navController)
         }
 
         composable(
@@ -35,7 +35,7 @@ fun NavGraph(
         composable(
             route = Route.PROFILE_SCREEN,
         ) {
-            ProfileScreen()
+            ProfileScreen(navController)
         }
     }
 }

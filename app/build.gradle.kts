@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    id("com.google.devtools.ksp")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -79,4 +81,17 @@ dependencies {
 
     // MVVM
     implementation("androidx.compose.runtime:runtime-livedata:1.6.3")
+
+    // HILT
+    ksp("com.google.dagger:hilt-android-compiler:2.51")
+    implementation("com.google.dagger:hilt-android:2.51")
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+
+    // ROOM
+    val room_version = "2.6.1"
+
+    implementation("androidx.room:room-runtime:$room_version")
+    annotationProcessor("androidx.room:room-compiler:$room_version")
+    ksp("androidx.room:room-compiler:$room_version")
+    implementation("androidx.room:room-ktx:$room_version")
 }

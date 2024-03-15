@@ -1,4 +1,4 @@
-package br.com.fiap.mercadoverde.ui.theme
+package br.com.fiap.mercadoverde.presentation.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

@@ -1,4 +1,4 @@
-package br.com.fiap.mercadoverde.ui.common
+package br.com.fiap.mercadoverde.presentation.shared
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -19,14 +19,20 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import br.com.fiap.mercadoverde.R
 import br.com.fiap.mercadoverde.navigation.Route
+import br.com.fiap.mercadoverde.presentation.viewmodels.CartViewModel
 
 @Composable
-fun AppHeader(navController: NavController) {
+fun AppHeader(
+    navController: NavController,
+    cartSize: Int
+) {
     val currentRoute = navController.currentBackStackEntry?.destination?.route
+    val cartViewModel = hiltViewModel<CartViewModel>()
 
     Box(
         modifier = Modifier
@@ -48,21 +54,24 @@ fun AppHeader(navController: NavController) {
                 contentDescription = "Carrinho",
                 tint = Color(0xFF49454F)
             )
-            Box(
-                modifier = Modifier
-                    .offset(x = 9.dp, y = -6.dp)
-                    .background(color = Color.Red, shape = CircleShape)
-                    .height(18.dp)
-                    .width(18.dp),
-                contentAlignment = Alignment.Center,
-            ) {
-                Text(
-                    text = "1",
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 12.sp,
-                    modifier = Modifier.offset(y = -2.dp)
-                )
+
+            if (cartSize > 0) {
+                Box(
+                    modifier = Modifier
+                        .offset(x = 9.dp, y = -6.dp)
+                        .background(color = Color.Red, shape = CircleShape)
+                        .height(18.dp)
+                        .width(18.dp),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Text(
+                        text = cartSize.toString(),
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 12.sp,
+                        modifier = Modifier.offset(y = -2.dp)
+                    )
+                }
             }
         }
     }

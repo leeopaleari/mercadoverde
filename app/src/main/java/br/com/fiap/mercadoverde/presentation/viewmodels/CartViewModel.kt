@@ -70,4 +70,11 @@ class CartViewModel @Inject constructor(
             _cartItems.postValue(productRepository.getAll())
         }
     }
+
+    suspend fun clearCartItems() {
+        viewModelScope.launch {
+            productRepository.clearCartItems()
+            _cartItems.postValue(productRepository.getAll())
+        }
+    }
 }

@@ -43,4 +43,7 @@ class ProductRepositoryImpl @Inject constructor(private val productDao: ProductD
         return -1
     }
 
+    suspend fun clearCartItems() {
+        productDao.clearItems()
+    }
 }

@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
@@ -53,7 +54,7 @@ fun CartScreen(navController: NavController, viewModel: CartViewModel = hiltView
         verticalArrangement = Arrangement.Center
     ) {
 
-        if (cartItems!!.isEmpty())
+        if (cartItems!!.isEmpty()) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -68,13 +69,32 @@ fun CartScreen(navController: NavController, viewModel: CartViewModel = hiltView
                     color = TextLightColor
                 )
             }
+        }
 
-        if (cartItems.isNotEmpty())
+        if (cartItems.isNotEmpty()) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+                horizontalArrangement = Arrangement.End
+            ) {
+                TextButton(onClick = {
+                    coroutineScope.launch {
+                        viewModel.clearCartItems()
+                    }
+                }) {
+                    Text(
+                        text = "Limpar carrinho",
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Red,
+                        fontFamily = Inter
+                    )
+                }
+            }
             LazyColumn(
                 modifier = Modifier
                     .weight(2f)
-                    .fillMaxWidth()
-                    .padding(top = 32.dp),
+                    .fillMaxWidth(),
                 contentPadding = PaddingValues(
                     start = 16.dp,
                     end = 16.dp
@@ -182,6 +202,7 @@ fun CartScreen(navController: NavController, viewModel: CartViewModel = hiltView
                     }
                 }
             }
+        }
 
         if (cartItems.isNotEmpty())
             Box(
@@ -192,7 +213,8 @@ fun CartScreen(navController: NavController, viewModel: CartViewModel = hiltView
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = formatCurrency(cartItems.sumOf { it.preco.toDouble() * it.quantidade }.toFloat()),
+                    text = formatCurrency(cartItems.sumOf { it.preco.toDouble() * it.quantidade }
+                        .toFloat()),
                     color = Color.White,
                     fontSize = 24.sp,
                     fontWeight = FontWeight.ExtraBold,

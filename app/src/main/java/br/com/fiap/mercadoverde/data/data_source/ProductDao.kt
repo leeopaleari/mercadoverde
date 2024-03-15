@@ -26,4 +26,7 @@ interface ProductDao {
 
     @Query("SELECT * FROM tb_product WHERE id = :productId")
     suspend fun findById(productId: Long): Product
+
+    @Query("DELETE FROM tb_product")
+    suspend fun clearItems()
 }

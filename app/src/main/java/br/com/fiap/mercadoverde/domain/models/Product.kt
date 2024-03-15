@@ -13,6 +13,9 @@ data class Product(
     var nome: String,
 
     @ColumnInfo
+    var categoria: String,
+
+    @ColumnInfo
     var preco: Float,
 
     @ColumnInfo

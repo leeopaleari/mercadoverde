@@ -24,7 +24,8 @@ fun ProfileScreen(navController: NavController) {
             Text(
                 text = "Leonardo",
                 fontWeight = FontWeight.Bold,
-                fontSize = 20.sp
+                fontSize = 20.sp,
+                color = Color.Black
             )
             //Icon(Icons.Outlined.Edit, contentDescription = "Edit Button")
 
@@ -35,8 +36,8 @@ fun ProfileScreen(navController: NavController) {
                 color = Color(0xFF7B7B7B)
             )
             Spacer(modifier = Modifier.height(10.dp))
-            Text(text = "Leonardo")
-            Text(text = "leonardo@gmail.com")
+            Text(text = "Leonardo", fontFamily = Inter, color = Color.Black)
+            Text(text = "leonardo@gmail.com", fontFamily = Inter, color = Color.Black)
 
             Spacer(modifier = Modifier.height(20.dp))
             Text(
@@ -45,8 +46,8 @@ fun ProfileScreen(navController: NavController) {
                 color = Color(0xFF7B7B7B)
             )
             Spacer(modifier = Modifier.height(10.dp))
-            Text(text = "Rua A, N 1")
-            Text(text = "Bairro Andorinhas, Campinas/SP")
+            Text(text = "Rua A, N 1", fontFamily = Inter, color = Color.Black)
+            Text(text = "Bairro Andorinhas, Campinas/SP", fontFamily = Inter, color = Color.Black)
 
             Spacer(modifier = Modifier.height(20.dp))
             Text(
@@ -55,8 +56,8 @@ fun ProfileScreen(navController: NavController) {
                 color = Color(0xFF7B7B7B)
             )
             Spacer(modifier = Modifier.height(10.dp))
-            Text(text = "Cartão de Crédito")
-            Text(text = "0000 0000 000 **")
+            Text(text = "Cartão de Crédito", fontFamily = Inter, color = Color.Black)
+            Text(text = "0000 0000 000 **", fontFamily = Inter, color = Color.Black)
 
 
         }

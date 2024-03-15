@@ -1,5 +1,6 @@
 package br.com.fiap.mercadoverde.presentation.screens.home
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -33,6 +34,7 @@ import br.com.fiap.mercadoverde.presentation.theme.TextColor
 import br.com.fiap.mercadoverde.presentation.viewmodels.CartViewModel
 import br.com.fiap.mercadoverde.presentation.viewmodels.HomeViewModel
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.selects.select
 
 data class Category(
     val nome: String,
@@ -45,7 +47,7 @@ fun HomeScreen(
     homeViewModel: HomeViewModel = hiltViewModel(),
     cartViewModel: CartViewModel = hiltViewModel()
 ) {
-    var searchState by remember {
+    var selectedCategory by remember {
         mutableStateOf("")
     }
 
@@ -89,12 +91,30 @@ fun HomeScreen(
             ),
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            items(categoryList) {
+            items(categoryList) { category ->
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    CategoryCard(category = it)
-                    Text(text = it.nome, fontFamily = Inter, color = TextColor)
+                    CategoryCard(
+                        category = category,
+                        onCategoryClick = {
+                            if (selectedCategory == category.nome) {
+                                selectedCategory = ""
+                                filteredProductList.value = productList
+                            } else {
+                                selectedCategory = category.nome
+                                filteredProductList.value =
+                                    productList.filter {
+                                        it.categoria.contains(
+                                            selectedCategory,
+                                            ignoreCase = true
+                                        )
+                                    }
+                            }
+                        },
+                        selected = category.nome == selectedCategory
+                    )
+                    Text(text = category.nome, fontFamily = Inter, color = TextColor)
                 }
             }
         }

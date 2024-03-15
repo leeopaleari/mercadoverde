@@ -13,7 +13,7 @@ class HomeViewModel @Inject constructor() : ViewModel() {
 
     private val _categoryList = MutableLiveData<List<Category>>(
         listOf(
-            Category("Caules", R.drawable.caules),
+            Category("Verduras", R.drawable.verduras),
             Category("Frutas", R.drawable.frutas),
             Category("Legumes", R.drawable.legumes),
         )
@@ -22,13 +22,15 @@ class HomeViewModel @Inject constructor() : ViewModel() {
 
     private val _productList = MutableLiveData<List<Product>>(
         listOf(
-            Product(1, "Laranja", 1.00f, R.drawable.laranja, "Unidade"),
-            Product(2, "Kiwi", 2.00f, R.drawable.kiwi, "Unidade"),
-            Product(3, "Pimentao", 5.50f, R.drawable.pimentao, "Unidade"),
-            Product(4, "Limão Siciliano", 4.30f, R.drawable.limao_siciliano, "Unidade"),
-            Product(5, "Alface", 2.00f, R.drawable.alface, "Unidade"),
-            Product(6, "Cebola", 3.30f, R.drawable.cebola, "Unidade"),
+            Product(1, "Laranja", "Frutas", 1.00f, R.drawable.laranja, "Unidade"),
+            Product(2, "Kiwi", "Frutas", 2.00f, R.drawable.kiwi, "Unidade"),
+            Product(3, "Pimentao", "", 5.50f, R.drawable.pimentao, "Unidade"),
+            Product(4, "Limão Siciliano", "Frutas", 4.30f, R.drawable.limao_siciliano, "Unidade"),
+            Product(5, "Alface", "Verduras", 2.00f, R.drawable.alface, "Unidade"),
+            Product(6, "Cebola", "Legumes", 3.30f, R.drawable.cebola, "Unidade"),
         )
     )
     val productList: MutableLiveData<List<Product>> = _productList
+
+
 }

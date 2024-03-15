@@ -1,5 +1,6 @@
 package br.com.fiap.mercadoverde.presentation.screens.home.composables
 
+import android.service.autofill.OnClickAction
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,16 +16,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import br.com.fiap.mercadoverde.presentation.screens.home.Category
+import br.com.fiap.mercadoverde.presentation.theme.PrimaryColor
 
 @Composable
-fun CategoryCard(category: Category) {
+fun CategoryCard(category: Category, onCategoryClick: () -> Unit = {}, selected: Boolean = false) {
     Card(
         modifier = Modifier
             .width(55.dp)
             .height(55.dp)
             .border(
-                width = 1.dp,
-                color = Color(0xFFD1D1D1),
+                width = if (selected) 4.dp else 1.dp,
+                color = if (selected) PrimaryColor else Color(0xFFD1D1D1),
                 shape = RoundedCornerShape(20)
             ),
         colors = CardColors(
@@ -33,7 +35,10 @@ fun CategoryCard(category: Category) {
             disabledContainerColor = Color.Gray,
             disabledContentColor = Color.Gray
         ),
-        shape = RoundedCornerShape(20.dp)
+        shape = RoundedCornerShape(20.dp),
+        onClick = {
+            onCategoryClick()
+        }
     ) {
         Image(
             modifier = Modifier.fillMaxSize().padding(10.dp),

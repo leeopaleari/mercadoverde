@@ -10,11 +10,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -62,12 +60,12 @@ class MainActivity : ComponentActivity() {
                         selectedIcon = Icons.Filled.Home,
                         unselectedIcon = Icons.Outlined.Home
                     ),
-                    BottomNavigationItem(
-                        title = "Busca",
-                        route = Route.SEARCH_SCREEN,
-                        selectedIcon = Icons.Filled.Search,
-                        unselectedIcon = Icons.Outlined.Search
-                    ),
+//                    BottomNavigationItem(
+//                        title = "Busca",
+//                        route = Route.SEARCH_SCREEN,
+//                        selectedIcon = Icons.Filled.Search,
+//                        unselectedIcon = Icons.Outlined.Search
+//                    ),
                     BottomNavigationItem(
                         title = "Carrinho",
                         route = Route.CART_SCREEN,
@@ -104,7 +102,7 @@ class MainActivity : ComponentActivity() {
                                 val currentDestination = navBackStackEntry?.destination
 
                                 navItems.forEach { item ->
-                                    var isCurrentDestinationEqualRoute =
+                                    val isCurrentDestinationEqualRoute =
                                         currentDestination?.hierarchy?.any { it.route == item.route }
 
                                     NavigationBarItem(

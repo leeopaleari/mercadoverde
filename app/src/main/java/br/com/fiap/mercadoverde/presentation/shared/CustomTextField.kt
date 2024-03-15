@@ -23,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -30,11 +31,12 @@ import br.com.fiap.mercadoverde.presentation.theme.Inter
 
 @Composable
 fun CustomTextField(
-    placeholderText: String = "",
     modifier: Modifier = Modifier,
+    placeholderText: String = "",
     leadingIcon: (@Composable () -> Unit)? = null,
     trailingIcon: (@Composable () -> Unit)? = null,
-    fontSize: TextUnit = 14.sp
+    fontSize: TextUnit = 14.sp,
+    onChange: (text: String) -> Unit
 ) {
 
     var text by rememberSaveable {
@@ -49,20 +51,22 @@ fun CustomTextField(
         .fillMaxWidth()
         .height(45.dp)
         .background(
-            Color(0xFFFFFF),
+            Color(0xFFFFFFFF),
         )
         .border(width = 1.dp, color = Color(0xFFD1D1D1), shape = RoundedCornerShape(20))
         .padding(4.dp),
         value = text,
         onValueChange = {
             text = it
+            onChange(it)
         },
         singleLine = true,
-        cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
+        cursorBrush = SolidColor(Color.Black),
         textStyle = LocalTextStyle.current.copy(
-            color = MaterialTheme.colorScheme.onSurface,
+            color = Color.Black,
             fontSize = fontSize,
-            fontFamily = Inter
+            fontFamily = Inter,
+            fontWeight = FontWeight.Bold
         ),
         decorationBox = { innerTextField ->
             Row(

@@ -17,16 +17,30 @@ class ProductRepositoryImpl @Inject constructor(private val productDao: ProductD
         return productDao.getAll()
     }
 
-    suspend fun increaseItemQty(product: Product): Int {
-        return product.let {
-            it.quantidade++
-            return productDao.update(product)
-        }
+    suspend fun findById(productId: Long): Product {
+        return productDao.findById(productId)
     }
 
-    suspend fun decreaseItemQty(product: Product): Int {
-        product.quantidade--
-        return productDao.update(product)
+    suspend fun increaseItemQty(productId: Long): Int {
+        val product = productDao.findById(productId)
+
+        if (product != null) {
+            product.quantidade++
+            return productDao.update(product)
+        }
+
+        return -1
+    }
+
+    suspend fun decreaseItemQty(productId: Long): Int {
+        val product = productDao.findById(productId)
+
+        if (product != null) {
+            product.quantidade--
+            return productDao.update(product)
+        }
+
+        return -1
     }
 
 }

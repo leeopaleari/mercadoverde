@@ -19,21 +19,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import br.com.fiap.mercadoverde.R
 import br.com.fiap.mercadoverde.navigation.Route
-import br.com.fiap.mercadoverde.presentation.viewmodels.CartViewModel
 
 @Composable
 fun AppHeader(
     navController: NavController,
-    cartSize: Int
+    cartSize: Int,
+    onSearchTextChange: (text: String) -> Unit,
 ) {
-    val currentRoute = navController.currentBackStackEntry?.destination?.route
-    val cartViewModel = hiltViewModel<CartViewModel>()
-
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -79,15 +75,20 @@ fun AppHeader(
     Box(modifier = Modifier.padding(top = 4.dp, start = 16.dp, end = 16.dp)) {
         CustomTextField(
             leadingIcon = {
+
                 Icon(
                     painter = painterResource(id = R.drawable.baseline_search_24),
                     contentDescription = "icone lupa",
                     tint = Color(0xFF49454F)
                 )
+
             },
             trailingIcon = null,
             fontSize = 14.sp,
             placeholderText = "Buscar por nome...",
+            onChange = {
+                onSearchTextChange(it)
+            }
         )
     }
 }

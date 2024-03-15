@@ -10,8 +10,6 @@ import androidx.lifecycle.viewModelScope
 import br.com.fiap.mercadoverde.data.repository.ProductRepositoryImpl
 import br.com.fiap.mercadoverde.domain.models.Product
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,8 +22,8 @@ class CartViewModel @Inject constructor(
     val cartItems: MutableLiveData<List<Product>> = _cartItems
 
     private var _onLoading by mutableStateOf(false)
-    val onLoading: Boolean
-        get() = _onLoading
+//    val onLoading: Boolean
+//        get() = _onLoading
 
     init {
         loadCartItems()
@@ -38,7 +36,7 @@ class CartViewModel @Inject constructor(
 
     fun loadCartItems() {
         viewModelScope.launch {
-            _cartItems.value = productRepository.getAll()
+            _cartItems.postValue(productRepository.getAll())
         }
     }
 
@@ -57,18 +55,19 @@ class CartViewModel @Inject constructor(
 
     suspend fun addItemQty(product: Product) {
         viewModelScope.launch {
-            productRepository.increaseItemQty(product)
+            productRepository.increaseItemQty(product.id)
             _cartItems.postValue(productRepository.getAll())
         }
     }
 
     suspend fun removeItemQty(product: Product) {
         viewModelScope.launch {
-            Log.d(TAG, "removeItemQty: ${product.quantidade}")
-            productRepository.decreaseItemQty(product)
+            if (product.quantidade == 1) {
+                productRepository.delete(product)
+            } else {
+                productRepository.decreaseItemQty(product.id)
+            }
             _cartItems.postValue(productRepository.getAll())
-
-            Log.d(TAG, "removeItemQty: ${cartItems.value}")
         }
     }
 }

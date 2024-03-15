@@ -3,7 +3,6 @@ package br.com.fiap.mercadoverde.data.data_source
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import br.com.fiap.mercadoverde.domain.models.Product
@@ -22,6 +21,9 @@ interface ProductDao {
     @Query("SELECT COUNT(*) FROM tb_product")
     suspend fun getCartSize(): Int
 
-    @Update(onConflict = OnConflictStrategy.REPLACE)
+    @Update
     suspend fun update(product: Product): Int
+
+    @Query("SELECT * FROM tb_product WHERE id = :productId")
+    suspend fun findById(productId: Long): Product
 }

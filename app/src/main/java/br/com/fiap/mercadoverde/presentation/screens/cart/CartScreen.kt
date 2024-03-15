@@ -20,7 +20,6 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -112,6 +111,7 @@ fun CartScreen(navController: NavController, viewModel: CartViewModel = hiltView
                                     text = item.nome,
                                     fontSize = 14.sp,
                                     fontFamily = Inter,
+                                    fontWeight = FontWeight.Bold,
                                     modifier = Modifier.weight(2f),
                                     color = TextLightColor
                                 )
@@ -158,7 +158,8 @@ fun CartScreen(navController: NavController, viewModel: CartViewModel = hiltView
                                 Text(
                                     text = item.quantidade.toString(),
                                     fontFamily = Inter,
-                                    fontWeight = FontWeight.ExtraBold
+                                    fontWeight = FontWeight.ExtraBold,
+                                    color = Color.Black
                                 )
 
                                 OutlinedButton(
@@ -191,10 +192,11 @@ fun CartScreen(navController: NavController, viewModel: CartViewModel = hiltView
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "Total: R$ 3,50",
+                    text = formatCurrency(cartItems.sumOf { it.preco.toDouble() * it.quantidade }.toFloat()),
                     color = Color.White,
                     fontSize = 24.sp,
-                    fontWeight = FontWeight.ExtraBold
+                    fontWeight = FontWeight.ExtraBold,
+                    fontFamily = Inter,
                 )
             }
     }

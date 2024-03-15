@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -21,11 +22,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import br.com.fiap.mercadoverde.data.repository.ProductRepositoryImpl
 import br.com.fiap.mercadoverde.presentation.screens.home.composables.CategoryCard
 import br.com.fiap.mercadoverde.presentation.screens.home.composables.ProductCard
 import br.com.fiap.mercadoverde.presentation.shared.AppHeader
@@ -46,19 +45,41 @@ fun HomeScreen(
     homeViewModel: HomeViewModel = hiltViewModel(),
     cartViewModel: CartViewModel = hiltViewModel()
 ) {
+    var searchState by remember {
+        mutableStateOf("")
+    }
+
     val coroutineScope = rememberCoroutineScope()
 
     val categoryList by homeViewModel.categoryList.observeAsState(initial = emptyList())
     val productList by homeViewModel.productList.observeAsState(initial = emptyList())
 
+    val filteredProductList = remember {
+        mutableStateOf(productList)
+    }
 
     val cartItems by cartViewModel.cartItems.observeAsState()
+
+    LaunchedEffect(key1 = Unit) {
+        cartViewModel.loadCartItems()
+    }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        AppHeader(navController, cartItems!!.size)
+        AppHeader(
+            navController,
+            cartItems!!.size,
+            onSearchTextChange = { text ->
+                if (text.isNotEmpty()) {
+                    filteredProductList.value =
+                        productList.filter { it.nome.contains(text, ignoreCase = true) }
+
+                } else {
+                    filteredProductList.value = productList
+                }
+            })
         Spacer(modifier = Modifier.height(12.dp))
 
         LazyRow(
@@ -90,14 +111,16 @@ fun HomeScreen(
                 bottom = 16.dp
             )
         ) {
-            items(productList) {
-                ProductCard(product = it, onSelectProduct = {
-                    coroutineScope.launch {
-                        cartViewModel.addItemToCart(it)
-                    }
-                }, selected = cartItems!!.any { selectedItem ->
-                    selectedItem.id === it.id
-                })
+            items(filteredProductList.value) { product ->
+                ProductCard(
+                    product = product,
+                    onSelectProduct = {
+                        coroutineScope.launch {
+                            cartViewModel.addItemToCart(product)
+                        }
+                    },
+                    selected = cartItems!!.any { it.id == product.id }
+                )
             }
         }
     }

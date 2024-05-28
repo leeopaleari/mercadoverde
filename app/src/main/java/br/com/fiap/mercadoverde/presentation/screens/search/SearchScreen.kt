@@ -7,7 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 
 @Composable
-fun SearchScreen(navController: NavController) {
+fun SearchScreen() {
 //    val context = LocalContext.current
 //    val productRepository = ProductRepositoryImpl(context)
 //    val cartItemsQty by remember {

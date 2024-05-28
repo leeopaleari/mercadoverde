@@ -1,15 +1,41 @@
-package br.com.fiap.mercadoverde.presentation.viewmodels
+package br.com.fiap.mercadoverde.presentation.screens.home.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import br.com.fiap.mercadoverde.R
 import br.com.fiap.mercadoverde.domain.models.Product
+import br.com.fiap.mercadoverde.network.ApiService
+import br.com.fiap.mercadoverde.network.ProductResponse
 import br.com.fiap.mercadoverde.presentation.screens.home.Category
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor() : ViewModel() {
+class HomeViewModel @Inject constructor(
+    private val apiService: ApiService
+) : ViewModel() {
+
+    private val _products = MutableStateFlow<List<ProductResponse>>(emptyList<ProductResponse>())
+
+    init {
+        viewModelScope.launch {
+            loadProducts()
+        }
+    }
+
+    private suspend fun loadProducts() {
+        try {
+            val products = apiService.getProducts()
+            val teste = ""
+        } catch (t: Throwable) {
+            Log.e("HomeViewModel", "loadUsers: ${t.message}", t)
+        }
+
+    }
 
     private val _categoryList = MutableLiveData<List<Category>>(
         listOf(

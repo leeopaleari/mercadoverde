@@ -5,6 +5,7 @@ import androidx.room.Room
 import br.com.fiap.mercadoverde.data.data_source.ProductDao
 import br.com.fiap.mercadoverde.data.data_source.ProductDatabase
 import br.com.fiap.mercadoverde.data.repository.ProductRepositoryImpl
+import br.com.fiap.mercadoverde.presentation.screens.cart.viewmodel.CartViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -40,4 +41,5 @@ object Injection {
     fun provideProductRepository(productDao: ProductDao): ProductRepositoryImpl {
         return ProductRepositoryImpl(productDao)
     }
+
 }

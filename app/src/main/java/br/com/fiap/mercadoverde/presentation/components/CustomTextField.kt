@@ -1,4 +1,4 @@
-package br.com.fiap.mercadoverde.presentation.shared
+package br.com.fiap.mercadoverde.presentation.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

@@ -1,4 +1,4 @@
-package br.com.fiap.mercadoverde.presentation.viewmodels
+package br.com.fiap.mercadoverde.presentation.screens.cart.viewmodel
 
 import android.util.Log
 import androidx.compose.runtime.getValue

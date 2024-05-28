@@ -1,4 +1,4 @@
-package br.com.fiap.mercadoverde.presentation.shared
+package br.com.fiap.mercadoverde.presentation.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -19,14 +19,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import br.com.fiap.mercadoverde.R
-import br.com.fiap.mercadoverde.navigation.Route
 
 @Composable
 fun AppHeader(
-    navController: NavController,
+//    navController: NavController,
     cartSize: Int,
     onSearchTextChange: (text: String) -> Unit,
 ) {
@@ -37,13 +34,13 @@ fun AppHeader(
         contentAlignment = Alignment.CenterEnd
     ) {
         IconButton(onClick = {
-            navController.navigate(Route.CART_SCREEN) {
-                popUpTo(navController.graph.findStartDestination().id) {
-                    saveState = true
-                }
-                launchSingleTop = true
-                restoreState = true
-            }
+//            navController.navigate(Route.CART_SCREEN) {
+//                popUpTo(navController.graph.findStartDestination().id) {
+//                    saveState = true
+//                }
+//                launchSingleTop = true
+//                restoreState = true
+//            }
         }) {
             Icon(
                 painter = painterResource(id = R.drawable.cart_icon),

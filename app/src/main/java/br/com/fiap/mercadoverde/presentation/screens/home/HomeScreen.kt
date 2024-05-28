@@ -1,6 +1,5 @@
 package br.com.fiap.mercadoverde.presentation.screens.home
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -25,16 +24,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
+import br.com.fiap.mercadoverde.presentation.components.AppHeader
+import br.com.fiap.mercadoverde.presentation.screens.cart.viewmodel.CartViewModel
 import br.com.fiap.mercadoverde.presentation.screens.home.composables.CategoryCard
 import br.com.fiap.mercadoverde.presentation.screens.home.composables.ProductCard
-import br.com.fiap.mercadoverde.presentation.shared.AppHeader
+import br.com.fiap.mercadoverde.presentation.screens.home.viewmodel.HomeViewModel
 import br.com.fiap.mercadoverde.presentation.theme.Inter
 import br.com.fiap.mercadoverde.presentation.theme.TextColor
-import br.com.fiap.mercadoverde.presentation.viewmodels.CartViewModel
-import br.com.fiap.mercadoverde.presentation.viewmodels.HomeViewModel
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.selects.select
 
 data class Category(
     val nome: String,
@@ -43,10 +40,11 @@ data class Category(
 
 @Composable
 fun HomeScreen(
-    navController: NavController,
+//    navController: NavController,
     homeViewModel: HomeViewModel = hiltViewModel(),
     cartViewModel: CartViewModel = hiltViewModel()
 ) {
+
     var selectedCategory by remember {
         mutableStateOf("")
     }
@@ -64,6 +62,9 @@ fun HomeScreen(
 
     LaunchedEffect(key1 = Unit) {
         cartViewModel.loadCartItems()
+//        snackbarHostState.showSnackbar(
+//            message = "Mensagem do Snackbar"
+//        )
     }
 
     Column(
@@ -71,7 +72,6 @@ fun HomeScreen(
             .fillMaxSize()
     ) {
         AppHeader(
-            navController,
             cartItems!!.size,
             onSearchTextChange = { text ->
                 if (text.isNotEmpty()) {
@@ -136,7 +136,7 @@ fun HomeScreen(
                     product = product,
                     onSelectProduct = {
                         coroutineScope.launch {
-                            cartViewModel.addItemToCart(product)
+//                            cartViewModel.addItemToCart(product)
                         }
                     },
                     selected = cartItems!!.any { it.id == product.id }
@@ -144,4 +144,5 @@ fun HomeScreen(
             }
         }
     }
+
 }

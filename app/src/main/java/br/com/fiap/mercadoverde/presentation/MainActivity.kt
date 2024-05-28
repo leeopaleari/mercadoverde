@@ -3,49 +3,50 @@ package br.com.fiap.mercadoverde.presentation
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material.icons.outlined.ShoppingCart
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.zIndex
+import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import br.com.fiap.mercadoverde.navigation.NavGraph
-import br.com.fiap.mercadoverde.navigation.Route
+import br.com.fiap.mercadoverde.presentation.navigation.MercadoVerdeNavHost
+import br.com.fiap.mercadoverde.presentation.navigation.TOP_LEVEL_DESTINATIONS
+import br.com.fiap.mercadoverde.presentation.navigation.TopLevelDestination
+import br.com.fiap.mercadoverde.presentation.navigation.TopLevelNavigation
 import br.com.fiap.mercadoverde.presentation.theme.BgColor
 import br.com.fiap.mercadoverde.presentation.theme.MercadoVerdeTheme
 import br.com.fiap.mercadoverde.presentation.theme.PrimaryColor
 import dagger.hilt.android.AndroidEntryPoint
-
-data class BottomNavigationItem(
-    val title: String,
-    val route: String,
-    val selectedIcon: ImageVector,
-    val unselectedIcon: ImageVector,
-    val badgeCount: Int? = null
-)
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -53,92 +54,108 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MercadoVerdeTheme {
-                val navItems = listOf(
-                    BottomNavigationItem(
-                        title = "Início",
-                        route = Route.HOME_SCREEN,
-                        selectedIcon = Icons.Filled.Home,
-                        unselectedIcon = Icons.Outlined.Home
-                    ),
-//                    BottomNavigationItem(
-//                        title = "Busca",
-//                        route = Route.SEARCH_SCREEN,
-//                        selectedIcon = Icons.Filled.Search,
-//                        unselectedIcon = Icons.Outlined.Search
-//                    ),
-                    BottomNavigationItem(
-                        title = "Carrinho",
-                        route = Route.CART_SCREEN,
-                        selectedIcon = Icons.Filled.ShoppingCart,
-                        unselectedIcon = Icons.Outlined.ShoppingCart
-                    ),
-                    BottomNavigationItem(
-                        title = "Perfil",
-                        route = Route.PROFILE_SCREEN,
-                        selectedIcon = Icons.Filled.Person,
-                        unselectedIcon = Icons.Outlined.Person
-                    ),
-                )
+                MercadoVerdeApp()
+            }
+        }
+    }
+}
 
-                val navController = rememberNavController()
+@Composable
+fun MercadoVerdeApp() {
+    Surface {
+        val navController = rememberNavController()
+        val snackbarHostState = remember { SnackbarHostState() }
 
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Scaffold(
-                        containerColor = BgColor,
-                        bottomBar = {
-                            NavigationBar(
-                                containerColor = Color.White,
-                                tonalElevation = 2.dp,
-                                modifier = Modifier.graphicsLayer {
-                                    clip = true
-                                    shape = RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp)
-                                    shadowElevation = 20f
-                                }
-                            ) {
-                                val navBackStackEntry by navController.currentBackStackEntryAsState()
-                                val currentDestination = navBackStackEntry?.destination
+        val topLevelNavigation = remember(navController) {
+            TopLevelNavigation(navController)
+        }
 
-                                navItems.forEach { item ->
-                                    val isCurrentDestinationEqualRoute =
-                                        currentDestination?.hierarchy?.any { it.route == item.route }
+        val bottomBarVisibility = rememberSaveable {
+            mutableStateOf(true)
+        }
 
-                                    NavigationBarItem(
-                                        selected = isCurrentDestinationEqualRoute == true,
-                                        onClick = {
-                                            navController.navigate(route = item.route) {
-                                                popUpTo(navController.graph.findStartDestination().id) {
-                                                    saveState = true
-                                                }
-                                                launchSingleTop = true
-                                                restoreState = true
-                                            }
-                                        },
-                                        label = {
-                                            Text(text = item.title)
-                                        },
-                                        icon = {
-                                            Icon(
-                                                imageVector = if (isCurrentDestinationEqualRoute == true) item.selectedIcon else item.unselectedIcon,
-                                                contentDescription = item.title
-                                            )
-                                        },
-                                        colors = NavigationBarItemDefaults.colors(
-                                            selectedIconColor = Color.White,
-                                            indicatorColor = PrimaryColor
-                                        )
-                                    )
-                                }
-                            }
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val currentDestination = navBackStackEntry?.destination
+//        val context = LocalContext.current
+
+        Scaffold(
+            snackbarHost = {
+                SnackbarHost(hostState = snackbarHostState)
+            },
+            containerColor = BgColor,
+            bottomBar = {
+                Box {
+                    AnimatedVisibility(
+                        visible = bottomBarVisibility.value,
+                        enter = slideInVertically(initialOffsetY = { it }),
+                        exit = slideOutVertically(targetOffsetY = { it }),
+                        content = {
+                            MercadoVerdeBottomBar(
+                                onNavigateToTopLevelDestination = topLevelNavigation::navigateTo,
+                                currentDestination = currentDestination,
+                            )
                         }
-                    ) { innerPadding ->
-                        Box(modifier = Modifier.padding(innerPadding)) {
-                            NavGraph(navController = navController)
-                        }
-                    }
+                    )
                 }
+            }
+        ) { padding ->
+            Box(
+                Modifier
+                    .fillMaxSize()
+                    .windowInsetsPadding(
+                        WindowInsets.safeDrawing.only(
+                            WindowInsetsSides.Horizontal
+                        )
+                    )
+            ) {
+                MercadoVerdeNavHost(
+                    navController = navController,
+                    bottomBarVisibility = bottomBarVisibility,
+                    modifier = Modifier
+                        .padding(padding)
+                        .consumeWindowInsets(padding)
+                        .zIndex(1f)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun MercadoVerdeBottomBar(
+    currentDestination: NavDestination?,
+    onNavigateToTopLevelDestination: (TopLevelDestination) -> Unit,
+) {
+    Surface(color = MaterialTheme.colorScheme.surface) {
+        NavigationBar(
+            containerColor = BgColor,
+        ) {
+            TOP_LEVEL_DESTINATIONS.forEach { destination ->
+                val selected =
+                    currentDestination?.hierarchy?.any { it.route == destination.route } == true
+
+                NavigationBarItem(
+                    selected = selected,
+                    onClick =
+                    {
+                        onNavigateToTopLevelDestination(destination)
+                    },
+                    icon = {
+                        Icon(
+                            if (selected) {
+                                destination.selectedIcon
+                            } else {
+                                destination.unselectedIcon
+                            },
+                            contentDescription = null
+                        )
+                    },
+                    label = { Text(destination.iconText) },
+                    colors = NavigationBarItemDefaults.colors(
+                        selectedIconColor = Color.White,
+                        indicatorColor = PrimaryColor
+                    )
+                )
             }
         }
     }

@@ -35,12 +35,12 @@ import androidx.navigation.NavController
 import br.com.fiap.mercadoverde.presentation.theme.Inter
 import br.com.fiap.mercadoverde.presentation.theme.PrimaryColor
 import br.com.fiap.mercadoverde.presentation.theme.TextLightColor
-import br.com.fiap.mercadoverde.presentation.viewmodels.CartViewModel
+import br.com.fiap.mercadoverde.presentation.screens.cart.viewmodel.CartViewModel
 import br.com.fiap.mercadoverde.utils.formatCurrency
 import kotlinx.coroutines.launch
 
 @Composable
-fun CartScreen(navController: NavController, viewModel: CartViewModel = hiltViewModel()) {
+fun CartScreen(viewModel: CartViewModel = hiltViewModel()) {
     val cartItems = viewModel.cartItems.observeAsState().value
     val coroutineScope = rememberCoroutineScope()
 

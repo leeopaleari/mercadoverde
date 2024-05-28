@@ -16,7 +16,7 @@ import androidx.navigation.NavController
 import br.com.fiap.mercadoverde.presentation.theme.Inter
 
 @Composable
-fun ProfileScreen(navController: NavController) {
+fun ProfileScreen() {
     Column(modifier = Modifier.fillMaxSize()) {
         Spacer(modifier = Modifier.height(20.dp))
 

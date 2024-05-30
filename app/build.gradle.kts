@@ -71,27 +71,29 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     // Navigation
-    implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
-    implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
-    implementation("androidx.navigation:navigation-compose:$nav_version")
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.navigation.compose)
 
     // Retrofit
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.logging.interceptor)
 
     // MVVM
-    implementation("androidx.compose.runtime:runtime-livedata:1.6.3")
+    implementation(libs.androidx.runtime.livedata)
 
     // HILT
-    ksp("com.google.dagger:hilt-android-compiler:2.51")
-    implementation("com.google.dagger:hilt-android:2.51")
-    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+    ksp(libs.hilt.android.compiler)
+    implementation(libs.hilt.android)
+    implementation(libs.androidx.hilt.navigation.compose)
 
     // ROOM
-    val room_version = "2.6.1"
+    implementation(libs.androidx.room.runtime)
+    annotationProcessor(libs.androidx.room.compiler)
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
 
-    implementation("androidx.room:room-runtime:$room_version")
-    annotationProcessor("androidx.room:room-compiler:$room_version")
-    ksp("androidx.room:room-compiler:$room_version")
-    implementation("androidx.room:room-ktx:$room_version")
+    //SHARED PREFERENCES
+    implementation(libs.androidx.security.crypto)
 }

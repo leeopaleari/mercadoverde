@@ -36,6 +36,7 @@ fun BaseInputField(
     keyboardType: KeyboardType = KeyboardType.Text,
     label: String,
     placeholder: String = "",
+    value: String = "",
     textArea: Boolean = false,
     autoFocus: Boolean = false,
     trailingIcon: @Composable() (() -> Unit)? = null,
@@ -46,8 +47,8 @@ fun BaseInputField(
     val focusRequester = remember { FocusRequester() }
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    var text by rememberSaveable {
-        mutableStateOf("")
+    var text by rememberSaveable(value) {
+        mutableStateOf(value)
     }
 
     if (autoFocus) {

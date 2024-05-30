@@ -1,16 +1,19 @@
 package br.com.fiap.mercadoverde.presentation.screens.home
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -22,9 +25,14 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import br.com.fiap.mercadoverde.R
 import br.com.fiap.mercadoverde.presentation.components.AppHeader
+import br.com.fiap.mercadoverde.presentation.components.CustomTextField
 import br.com.fiap.mercadoverde.presentation.screens.cart.viewmodel.CartViewModel
 import br.com.fiap.mercadoverde.presentation.screens.home.composables.CategoryCard
 import br.com.fiap.mercadoverde.presentation.screens.home.composables.ProductCard
@@ -40,7 +48,6 @@ data class Category(
 
 @Composable
 fun HomeScreen(
-//    navController: NavController,
     homeViewModel: HomeViewModel = hiltViewModel(),
     cartViewModel: CartViewModel = hiltViewModel()
 ) {
@@ -71,17 +78,28 @@ fun HomeScreen(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        AppHeader(
-            cartItems!!.size,
-            onSearchTextChange = { text ->
-                if (text.isNotEmpty()) {
-                    filteredProductList.value =
-                        productList.filter { it.nome.contains(text, ignoreCase = true) }
+        Box(
+            modifier = Modifier.padding(16.dp),
 
-                } else {
-                    filteredProductList.value = productList
-                }
-            })
+            ) {
+
+            CustomTextField(
+                leadingIcon = {
+
+                    Icon(
+                        painter = painterResource(id = R.drawable.baseline_search_24),
+                        contentDescription = "icone lupa",
+                        tint = Color(0xFF49454F)
+                    )
+
+                },
+                trailingIcon = null,
+                fontSize = 14.sp,
+                placeholderText = "Buscar por nome...",
+                onChange = {
+//                onSearchTextChange(it)
+                })
+        }
         Spacer(modifier = Modifier.height(12.dp))
 
         LazyRow(

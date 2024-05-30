@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -12,11 +13,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import br.com.fiap.mercadoverde.presentation.screens.auth.SignIn.viewmodel.AuthViewModel
+import br.com.fiap.mercadoverde.presentation.screens.profile.viewmodel.ProfileScreeViewModel
 import br.com.fiap.mercadoverde.presentation.theme.Inter
 
 @Composable
-fun ProfileScreen() {
+fun ProfileScreen(
+    onNavigateToAuth: () -> Unit,
+    viewModel: ProfileScreeViewModel = hiltViewModel()
+) {
     Column(modifier = Modifier.fillMaxSize()) {
         Spacer(modifier = Modifier.height(20.dp))
 
@@ -27,7 +34,6 @@ fun ProfileScreen() {
                 fontSize = 20.sp,
                 color = Color.Black
             )
-            //Icon(Icons.Outlined.Edit, contentDescription = "Edit Button")
 
             Spacer(modifier = Modifier.height(20.dp))
             Text(
@@ -58,8 +64,13 @@ fun ProfileScreen() {
             Spacer(modifier = Modifier.height(10.dp))
             Text(text = "Cartão de Crédito", fontFamily = Inter, color = Color.Black)
             Text(text = "0000 0000 000 **", fontFamily = Inter, color = Color.Black)
+        }
 
-
+        Button(onClick = {
+            viewModel.logout()
+            onNavigateToAuth()
+        }) {
+            Text(text = "Sair")
         }
     }
 

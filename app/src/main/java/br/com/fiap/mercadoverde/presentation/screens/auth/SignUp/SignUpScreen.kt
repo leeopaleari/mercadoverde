@@ -1,133 +1,207 @@
 package br.com.fiap.mercadoverde.presentation.screens.auth.SignUp
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import br.com.fiap.mentora.common.button.BaseButton
+import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import br.com.fiap.mercadoverde.R
 import br.com.fiap.mercadoverde.presentation.components.BaseInputField
+import br.com.fiap.mercadoverde.presentation.components.MyCircularProgress
+import br.com.fiap.mercadoverde.presentation.components.button.BaseButton
+import br.com.fiap.mercadoverde.presentation.screens.auth.SignUp.state.SignUpUiState
+import br.com.fiap.mercadoverde.presentation.screens.auth.SignUp.viewmodel.SignUpViewModel
+import br.com.fiap.mercadoverde.presentation.theme.PrimaryColor
 
 @Composable
 fun SignUpScreen(
     onPopBackStack: () -> Unit,
+    onNavigateToHomeScreen: () -> Unit,
+    viewModel: SignUpViewModel = hiltViewModel()
+) {
+    val uiState by viewModel.uiState.collectAsState()
+
+    if (uiState.isLoading) MyCircularProgress()
+    if (uiState.registerSuccess) onNavigateToHomeScreen()
+
+    Content(
+        onPopBackStack = onPopBackStack,
+        uiState = uiState,
+        viewModel = viewModel,
+        onNavigateToHomeScreen = onNavigateToHomeScreen
+    )
+}
+
+@Composable
+fun Content(
+    onPopBackStack: () -> Unit,
+    uiState: SignUpUiState,
+    viewModel: SignUpViewModel,
+    onNavigateToHomeScreen: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceAround,
         modifier = Modifier
             .fillMaxSize()
-
             .padding(16.dp)
             .verticalScroll(scrollState)
     ) {
 
-        Text(text = "Criar Conta", style = MaterialTheme.typography.titleLarge.copy())
-
-        Spacer(modifier = Modifier.height(6.dp))
-
-        BaseInputField(
-            onValueChange = {
-//                uiState.onNameChange(it)
-            },
-            label = "Nome completo",
-            placeholder = "Digite seu nome completo"
+        Image(
+            painter = painterResource(id = R.drawable.logo),
+            contentDescription = "Logo mercado verde",
+            modifier = Modifier
+                .size(80.dp, Dp.Unspecified)
+                .aspectRatio(1f)
         )
 
-        Spacer(modifier = Modifier.height(6.dp))
+        Box {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+
+                Text(text = "Criar conta", style = MaterialTheme.typography.titleLarge.copy())
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                BaseInputField(
+                    onValueChange = {
+                        uiState.onNameChange(it)
+                    },
+                    label = "Nome completo",
+                    placeholder = "Digite seu nome"
+                )
+
+                Spacer(modifier = Modifier.height(6.dp))
 
 
-        BaseInputField(
-            onValueChange = {
-//                uiState.onEmailChange(it)
-            },
-            label = "E-mail",
-            placeholder = "exemplo@email.com"
-        )
+                BaseInputField(
+                    onValueChange = {
+                        uiState.onEmailChange(it)
+                    },
+                    label = "E-mail",
+                    placeholder = "Digite seu e-mail"
+                )
 
-        Spacer(modifier = Modifier.height(6.dp))
+                Spacer(modifier = Modifier.height(6.dp))
 
-        BaseInputField(
-            onValueChange = {
-//                uiState.onPasswordChange(it)
-            },
-            label = "Senha",
-            placeholder = "Digite sua senha",
-            keyboardType = KeyboardType.Password
-        )
+                BaseInputField(
+                    onValueChange = {
+                        uiState.onPasswordChange(it)
+                    },
+                    label = "Senha",
+                    placeholder = "Digite sua senha",
+                    keyboardType = KeyboardType.Password
+                )
 
-        Spacer(modifier = Modifier.height(6.dp))
+                Spacer(modifier = Modifier.height(6.dp))
 
-        BaseInputField(
-            onValueChange = {
-            },
-            label = "CEP",
-            placeholder = "Digite seu CEP",
-        )
+                BaseInputField(
+                    onValueChange = {
+                        uiState.onZipCodeChange(it)
+                    },
+                    label = "CEP",
+                    placeholder = "Seu CEP",
+                )
 
-        Spacer(modifier = Modifier.height(6.dp))
+                Spacer(modifier = Modifier.height(6.dp))
 
-        BaseInputField(
-            onValueChange = {
-            },
-            label = "Cidade",
-            placeholder = "Sua cidade",
-            keyboardType = KeyboardType.Password
-        )
+                BaseInputField(
+                    value = uiState.city,
+                    onValueChange = {
+                        uiState.onCityChange(it)
+                    },
+                    label = "Cidade",
+                    placeholder = "Sua cidade",
+                )
 
-        Spacer(modifier = Modifier.height(6.dp))
+                Spacer(modifier = Modifier.height(6.dp))
 
-        BaseInputField(
-            onValueChange = {
-            },
-            label = "Rua",
-            placeholder = "Sua rua",
-            keyboardType = KeyboardType.Password
-        )
+                Row {
 
-        Spacer(modifier = Modifier.height(6.dp))
+                    BaseInputField(
+                        value = uiState.street,
+                        modifier = Modifier.weight(0.7f),
+                        onValueChange = {
+                            uiState.onStreetChange(it)
+                        },
+                        label = "Rua",
+                        placeholder = "Sua rua",
+                    )
 
-        BaseInputField(
-            onValueChange = {
-            },
-            label = "Nº",
-            placeholder = "",
-            keyboardType = KeyboardType.Password
-        )
+                    Spacer(modifier = Modifier.width(10.dp))
 
-
-        Spacer(modifier = Modifier.weight(1f))
-
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            BaseButton(
-                text = "Voltar",
-                onClick = onPopBackStack,
-                modifier = Modifier.weight(0.5f),
-            )
-            Spacer(modifier = Modifier.width(16.dp))
-            BaseButton(
-                text = "Cadastrar",
-                onClick = {
-                },
-                modifier = Modifier.weight(0.5f)
-            )
+                    BaseInputField(
+                        modifier = Modifier.weight(0.3f),
+                        onValueChange = {
+                            uiState.onHouseNumberChange(it)
+                        },
+                        label = "Nº",
+                        placeholder = "",
+                    )
+                }
+            }
         }
 
-        Spacer(modifier = Modifier.height(10.dp))
+
+        Box {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Spacer(modifier = Modifier.height(16.dp))
+
+                BaseButton(
+                    text = "Criar conta",
+                    onClick = {
+                        viewModel.createAccount()
+                    },
+                    modifier = Modifier.width(200.dp),
+                    enabled = uiState.canRegister()
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Row {
+                    Text(text = "Já tem uma conta? ", fontSize = 14.sp)
+                    Text(
+                        text = "Fazer login",
+                        color = PrimaryColor,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.ExtraBold,
+                        modifier = Modifier.clickable {
+                            onPopBackStack()
+                        }
+                    )
+                }
+            }
+        }
+
     }
 }

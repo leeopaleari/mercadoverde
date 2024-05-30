@@ -6,8 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.fiap.mercadoverde.R
 import br.com.fiap.mercadoverde.domain.models.Product
-import br.com.fiap.mercadoverde.network.ApiService
-import br.com.fiap.mercadoverde.network.ProductResponse
+import br.com.fiap.mercadoverde.domain.services.SecureStorageService
+import br.com.fiap.mercadoverde.network.model.ProductResponse
+import br.com.fiap.mercadoverde.network.services.ProductService
 import br.com.fiap.mercadoverde.presentation.screens.home.Category
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,7 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val apiService: ApiService
+    private val secureStorage: SecureStorageService,
+    private val productService: ProductService
 ) : ViewModel() {
 
     private val _products = MutableStateFlow<List<ProductResponse>>(emptyList<ProductResponse>())
@@ -29,7 +31,7 @@ class HomeViewModel @Inject constructor(
 
     private suspend fun loadProducts() {
         try {
-            val products = apiService.getProducts()
+            val products = productService.getProducts()
             val teste = ""
         } catch (t: Throwable) {
             Log.e("HomeViewModel", "loadUsers: ${t.message}", t)

@@ -5,6 +5,7 @@ import androidx.room.Room
 import br.com.fiap.mercadoverde.data.data_source.ProductDao
 import br.com.fiap.mercadoverde.data.data_source.ProductDatabase
 import br.com.fiap.mercadoverde.data.repository.ProductRepositoryImpl
+import br.com.fiap.mercadoverde.domain.services.SecureStorageService
 import br.com.fiap.mercadoverde.presentation.screens.cart.viewmodel.CartViewModel
 import dagger.Module
 import dagger.Provides
@@ -40,6 +41,12 @@ object Injection {
     @Singleton
     fun provideProductRepository(productDao: ProductDao): ProductRepositoryImpl {
         return ProductRepositoryImpl(productDao)
+    }
+
+    @Singleton
+    @Provides
+    fun provideSecureStorage(@ApplicationContext context: Context): SecureStorageService {
+        return SecureStorageService(context)
     }
 
 }

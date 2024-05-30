@@ -1,4 +1,4 @@
-package br.com.fiap.mentora.common.button
+package br.com.fiap.mercadoverde.presentation.components.button
 
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults

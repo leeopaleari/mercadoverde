@@ -7,6 +7,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.consumeWindowInsets
@@ -39,6 +40,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import br.com.fiap.mercadoverde.presentation.components.AppHeader
 import br.com.fiap.mercadoverde.presentation.navigation.MercadoVerdeNavHost
 import br.com.fiap.mercadoverde.presentation.navigation.TOP_LEVEL_DESTINATIONS
 import br.com.fiap.mercadoverde.presentation.navigation.TopLevelDestination
@@ -76,13 +78,24 @@ fun MercadoVerdeApp() {
 
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentDestination = navBackStackEntry?.destination
-//        val context = LocalContext.current
 
         Scaffold(
             snackbarHost = {
                 SnackbarHost(hostState = snackbarHostState)
             },
             containerColor = BgColor,
+            topBar = {
+                AnimatedVisibility(
+                    visible = bottomBarVisibility.value,
+                    enter = slideInVertically(initialOffsetY = { it }),
+                    exit = slideOutVertically(targetOffsetY = { it }),
+                    content = {
+                        AppHeader(cartSize = 1) {
+
+                        }
+                    }
+                )
+            },
             bottomBar = {
                 Box {
                     AnimatedVisibility(
@@ -99,18 +112,19 @@ fun MercadoVerdeApp() {
                 }
             }
         ) { padding ->
-            Box(
+            Row(
                 Modifier
-                    .fillMaxSize()
-                    .windowInsetsPadding(
-                        WindowInsets.safeDrawing.only(
-                            WindowInsetsSides.Horizontal
-                        )
-                    )
+//                    .fillMaxSize()
+//                    .windowInsetsPadding(
+//                        WindowInsets.safeDrawing.only(
+//                            WindowInsetsSides.Horizontal
+//                        )
+//                    )
             ) {
                 MercadoVerdeNavHost(
                     navController = navController,
                     bottomBarVisibility = bottomBarVisibility,
+                    snackbarHostState = snackbarHostState,
                     modifier = Modifier
                         .padding(padding)
                         .consumeWindowInsets(padding)

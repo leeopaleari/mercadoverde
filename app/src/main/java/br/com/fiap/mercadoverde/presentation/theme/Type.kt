@@ -24,7 +24,8 @@ val Typography = Typography(
         fontWeight = FontWeight.Bold,
         fontSize = 24.sp,
         lineHeight = 28.sp,
-        letterSpacing = 0.sp
+        letterSpacing = 0.sp,
+        color = PrimaryColor
     ),
     /* Other default text styles to override
     labelSmall = TextStyle(

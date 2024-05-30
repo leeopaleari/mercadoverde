@@ -1,4 +1,4 @@
-package br.com.fiap.mercadoverde.network
+package br.com.fiap.mercadoverde.network.model
 
 data class RegisterRequest(
     val email: String,

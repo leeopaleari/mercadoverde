@@ -5,11 +5,13 @@ import androidx.compose.animation.core.tween
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import br.com.fiap.mercadoverde.presentation.navigation.INavigationDestination
 import br.com.fiap.mercadoverde.presentation.screens.auth.SignIn.navigation.SignInDestination
 import br.com.fiap.mercadoverde.presentation.screens.auth.SignUp.SignUpScreen
+import br.com.fiap.mercadoverde.presentation.screens.home.navigation.HomeDestination
 
 object SignUpDestination : INavigationDestination {
     override val route = "signup_route"
@@ -38,13 +40,21 @@ fun NavGraphBuilder.SignUpGraph(
         LaunchedEffect(null) {
             bottomBarVisibility.value = false
         }
-//        val signUpViewModel = it.sharedViewModel<SignUpViewModel>(navController)
 
         SignUpScreen(
             onPopBackStack = {
                 navController.navigateUp();
             },
-//            viewModel = signUpViewModel
+            onNavigateToHomeScreen = {
+                navController.navigate(HomeDestination.route) {
+                    popUpTo(navController.graph.findStartDestination().id) {
+                        inclusive = true
+                        saveState = false
+                    }
+                    launchSingleTop = true
+                    restoreState = false
+                }
+            }
         )
     }
 

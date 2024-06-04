@@ -7,6 +7,12 @@ data class Endereco(
     @SerializedName("cep")
     val zipCode: String = "",
 
+    @SerializedName("bairro")
+    val neighborhood: String = "",
+
+    @SerializedName("uf")
+    val state: String = "",
+
     @SerializedName("logradouro")
     val street: String = "",
 

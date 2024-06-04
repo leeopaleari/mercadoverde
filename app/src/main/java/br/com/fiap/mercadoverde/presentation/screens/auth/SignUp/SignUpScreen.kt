@@ -46,7 +46,7 @@ fun SignUpScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    if (uiState.isLoading) MyCircularProgress()
+    if (uiState.isLoading) MyCircularProgress("Buscando CEP..")
     if (uiState.registerSuccess) onNavigateToHomeScreen()
 
     Content(
@@ -122,23 +122,51 @@ fun Content(
 
                 Spacer(modifier = Modifier.height(6.dp))
 
-                BaseInputField(
-                    onValueChange = {
-                        uiState.onZipCodeChange(it)
-                    },
-                    label = "CEP",
-                    placeholder = "Seu CEP",
-                )
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    BaseInputField(
+                        modifier = Modifier.fillMaxWidth(0.4f),
+                        onValueChange = {
+                            uiState.onZipCodeChange(it)
+                        },
+                        label = "CEP",
+                        placeholder = "Seu CEP",
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(6.dp))
+
+                Row {
+                    BaseInputField(
+                        value = uiState.city,
+                        modifier = Modifier.weight(0.8f),
+                        onValueChange = {
+                            uiState.onCityChange(it)
+                        },
+                        label = "Cidade",
+                        placeholder = "Sua cidade",
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
+
+                    BaseInputField(
+                        value = uiState.state,
+                        modifier = Modifier.weight(0.2f),
+                        onValueChange = {
+                            uiState.onHouseNumberChange(it)
+                        },
+                        label = "UF",
+                        placeholder = "UF",
+                    )
+                }
 
                 Spacer(modifier = Modifier.height(6.dp))
 
                 BaseInputField(
-                    value = uiState.city,
+                    value = uiState.neighborhood,
                     onValueChange = {
-                        uiState.onCityChange(it)
+                        uiState.onNeighborhoodChange(it)
                     },
-                    label = "Cidade",
-                    placeholder = "Sua cidade",
+                    label = "Bairro",
+                    placeholder = "Digite seu bairro",
                 )
 
                 Spacer(modifier = Modifier.height(6.dp))
@@ -147,7 +175,7 @@ fun Content(
 
                     BaseInputField(
                         value = uiState.street,
-                        modifier = Modifier.weight(0.7f),
+                        modifier = Modifier.weight(0.8f),
                         onValueChange = {
                             uiState.onStreetChange(it)
                         },
@@ -158,7 +186,7 @@ fun Content(
                     Spacer(modifier = Modifier.width(10.dp))
 
                     BaseInputField(
-                        modifier = Modifier.weight(0.3f),
+                        modifier = Modifier.weight(0.2f),
                         onValueChange = {
                             uiState.onHouseNumberChange(it)
                         },

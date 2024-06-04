@@ -15,17 +15,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 
 @Composable
-fun MyCircularProgress() {
+fun MyCircularProgress(
+    text: String,
+    showBackground: Boolean = true
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = Color(0x80222222))
+            .background(color = if (showBackground) Color(0x80222222) else Color.Transparent)
             .zIndex(2f),
         contentAlignment = Alignment.Center
     ) {
         CircularProgressIndicator(
             modifier = Modifier.size(80.dp)
         )
-        Text("Buscando mentores..", modifier = Modifier.offset(y = 55.dp))
+        Text(text, modifier = Modifier.offset(y = 55.dp))
     }
 }

@@ -91,136 +91,136 @@ fun CartScreen(viewModel: CartViewModel = hiltViewModel()) {
                     )
                 }
             }
-            LazyColumn(
-                modifier = Modifier
-                    .weight(2f)
-                    .fillMaxWidth(),
-                contentPadding = PaddingValues(
-                    start = 16.dp,
-                    end = 16.dp
-                ),
-                verticalArrangement = Arrangement.spacedBy(10.dp)
-            ) {
-                items(cartItems) { item ->
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(20.dp),
-                    ) {
-                        Card(
-                            modifier = Modifier
-                                .weight(2f)
-                                .height(60.dp),
-                            border = BorderStroke(width = 1.dp, color = Color.Gray)
-                        ) {
-                            Row(
-                                modifier = Modifier
-                                    .background(color = Color.White)
-                                    .fillMaxWidth()
-                                    .padding(8.dp)
-                                    .height(60.dp),
-                                verticalAlignment = Alignment.CenterVertically,
-                            ) {
-
-                                Image(
-                                    painter = painterResource(id = item.imagem),
-                                    contentDescription = "Imagem do produto",
-                                    modifier = Modifier
-                                        .padding(end = 6.dp)
-                                        .width(40.dp)
-                                )
-                                Text(
-                                    text = item.nome,
-                                    fontSize = 14.sp,
-                                    fontFamily = Inter,
-                                    fontWeight = FontWeight.Bold,
-                                    modifier = Modifier.weight(2f),
-                                    color = TextLightColor
-                                )
-                                Text(
-                                    text = formatCurrency(item.preco),
-                                    fontSize = 20.sp,
-                                    fontWeight = FontWeight.ExtraBold,
-                                    fontFamily = Inter,
-                                    color = Color.Black
-                                )
-                            }
-                        }
-
-                        Card(
-                            modifier = Modifier
-                                .weight(1f)
-                                .height(60.dp),
-                            border = BorderStroke(width = 1.dp, color = Color.Gray)
-                        ) {
-                            Row(
-                                modifier = Modifier
-                                    .background(color = Color.White)
-                                    .fillMaxWidth()
-                                    .padding(8.dp)
-                                    .height(60.dp),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                OutlinedButton(
-                                    onClick = {
-                                        coroutineScope.launch {
-                                            viewModel.removeItemQty(item)
-                                        }
-                                    },
-                                    modifier = Modifier.weight(1f),
-                                    contentPadding = PaddingValues(
-                                        4.dp
-                                    ),
-                                    border = BorderStroke(width = 0.dp, color = Color.White)
-                                ) {
-                                    Text(text = "-", color = PrimaryColor)
-                                }
-
-                                Text(
-                                    text = item.quantidade.toString(),
-                                    fontFamily = Inter,
-                                    fontWeight = FontWeight.ExtraBold,
-                                    color = Color.Black
-                                )
-
-                                OutlinedButton(
-                                    onClick = {
-                                        coroutineScope.launch {
-                                            viewModel.addItemQty(item)
-                                        }
-                                    },
-                                    modifier = Modifier.weight(1f),
-                                    contentPadding = PaddingValues(
-                                        0.dp
-                                    ),
-                                    border = BorderStroke(width = 0.dp, color = Color.White)
-                                ) {
-                                    Text(text = "+", color = PrimaryColor)
-                                }
-
-                            }
-                        }
-                    }
-                }
-            }
+//            LazyColumn(
+//                modifier = Modifier
+//                    .weight(2f)
+//                    .fillMaxWidth(),
+//                contentPadding = PaddingValues(
+//                    start = 16.dp,
+//                    end = 16.dp
+//                ),
+//                verticalArrangement = Arrangement.spacedBy(10.dp)
+//            ) {
+//                items(cartItems) { item ->
+//                    Row(
+//                        horizontalArrangement = Arrangement.spacedBy(20.dp),
+//                    ) {
+//                        Card(
+//                            modifier = Modifier
+//                                .weight(2f)
+//                                .height(60.dp),
+//                            border = BorderStroke(width = 1.dp, color = Color.Gray)
+//                        ) {
+//                            Row(
+//                                modifier = Modifier
+//                                    .background(color = Color.White)
+//                                    .fillMaxWidth()
+//                                    .padding(8.dp)
+//                                    .height(60.dp),
+//                                verticalAlignment = Alignment.CenterVertically,
+//                            ) {
+//
+//                                Image(
+//                                    painter = painterResource(id = item.imagem),
+//                                    contentDescription = "Imagem do produto",
+//                                    modifier = Modifier
+//                                        .padding(end = 6.dp)
+//                                        .width(40.dp)
+//                                )
+//                                Text(
+//                                    text = item.nome,
+//                                    fontSize = 14.sp,
+//                                    fontFamily = Inter,
+//                                    fontWeight = FontWeight.Bold,
+//                                    modifier = Modifier.weight(2f),
+//                                    color = TextLightColor
+//                                )
+//                                Text(
+//                                    text = formatCurrency(item.preco),
+//                                    fontSize = 20.sp,
+//                                    fontWeight = FontWeight.ExtraBold,
+//                                    fontFamily = Inter,
+//                                    color = Color.Black
+//                                )
+//                            }
+//                        }
+//
+//                        Card(
+//                            modifier = Modifier
+//                                .weight(1f)
+//                                .height(60.dp),
+//                            border = BorderStroke(width = 1.dp, color = Color.Gray)
+//                        ) {
+//                            Row(
+//                                modifier = Modifier
+//                                    .background(color = Color.White)
+//                                    .fillMaxWidth()
+//                                    .padding(8.dp)
+//                                    .height(60.dp),
+//                                horizontalArrangement = Arrangement.SpaceBetween,
+//                                verticalAlignment = Alignment.CenterVertically
+//                            ) {
+//                                OutlinedButton(
+//                                    onClick = {
+//                                        coroutineScope.launch {
+//                                            viewModel.removeItemQty(item)
+//                                        }
+//                                    },
+//                                    modifier = Modifier.weight(1f),
+//                                    contentPadding = PaddingValues(
+//                                        4.dp
+//                                    ),
+//                                    border = BorderStroke(width = 0.dp, color = Color.White)
+//                                ) {
+//                                    Text(text = "-", color = PrimaryColor)
+//                                }
+//
+//                                Text(
+//                                    text = item.quantidade.toString(),
+//                                    fontFamily = Inter,
+//                                    fontWeight = FontWeight.ExtraBold,
+//                                    color = Color.Black
+//                                )
+//
+//                                OutlinedButton(
+//                                    onClick = {
+//                                        coroutineScope.launch {
+//                                            viewModel.addItemQty(item)
+//                                        }
+//                                    },
+//                                    modifier = Modifier.weight(1f),
+//                                    contentPadding = PaddingValues(
+//                                        0.dp
+//                                    ),
+//                                    border = BorderStroke(width = 0.dp, color = Color.White)
+//                                ) {
+//                                    Text(text = "+", color = PrimaryColor)
+//                                }
+//
+//                            }
+//                        }
+//                    }
+//                }
+//            }
         }
 
-        if (cartItems.isNotEmpty())
-            Box(
-                modifier = Modifier
-                    .background(color = PrimaryColor)
-                    .padding(vertical = 8.dp)
-                    .fillMaxWidth(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = formatCurrency(cartItems.sumOf { it.preco.toDouble() * it.quantidade }
-                        .toFloat()),
-                    color = Color.White,
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.ExtraBold,
-                    fontFamily = Inter,
-                )
-            }
+//        if (cartItems.isNotEmpty())
+//            Box(
+//                modifier = Modifier
+//                    .background(color = PrimaryColor)
+//                    .padding(vertical = 8.dp)
+//                    .fillMaxWidth(),
+//                contentAlignment = Alignment.Center
+//            ) {
+//                Text(
+//                    text = formatCurrency(cartItems.sumOf { it.preco.toDouble() * it.quantidade }
+//                        .toFloat()),
+//                    color = Color.White,
+//                    fontSize = 24.sp,
+//                    fontWeight = FontWeight.ExtraBold,
+//                    fontFamily = Inter,
+//                )
+//            }
     }
 
 }

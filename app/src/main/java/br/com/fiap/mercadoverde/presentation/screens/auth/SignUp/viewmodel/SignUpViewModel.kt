@@ -30,6 +30,12 @@ class SignUpViewModel @Inject constructor(
                 onPasswordChange = { password ->
                     _uiState.value = _uiState.value.copy(password = password)
                 },
+                onStateChange = { state ->
+                    _uiState.value = _uiState.value.copy(state = state)
+                },
+                onNeighborhoodChange = { neighborhood ->
+                    _uiState.value = _uiState.value.copy(neighborhood = neighborhood)
+                },
                 onEmailChange = { email ->
                     _uiState.value = _uiState.value.copy(email = email)
                 },
@@ -70,7 +76,9 @@ class SignUpViewModel @Inject constructor(
             street = uiState.value.street,
             country = uiState.value.country,
             city = uiState.value.city,
-            zipCode = uiState.value.zipCode
+            zipCode = uiState.value.zipCode,
+            state = uiState.value.zipCode,
+            neighborhood = uiState.value.zipCode
         )
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, hasError = false) }
@@ -83,7 +91,13 @@ class SignUpViewModel @Inject constructor(
 
             } catch (e: Exception) {
                 Log.e("SignUpViewModel", "Error fetching address", e)
-                _uiState.update { it.copy(isLoading = false, hasError = true, registerSuccess = false) }
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        hasError = true,
+                        registerSuccess = false
+                    )
+                }
             } finally {
                 _uiState.update { it.copy(isLoading = false) }
             }
@@ -106,6 +120,8 @@ class SignUpViewModel @Inject constructor(
                     street = address.street,
                     city = address.city,
                     country = "Brasil",
+                    neighborhood = address.neighborhood,
+                    state = address.state,
 
                     isLoading = false,
                     hasError = false

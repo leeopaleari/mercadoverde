@@ -7,7 +7,7 @@ import retrofit2.http.Query
 interface ProductService {
 
     @GET("products")
-    suspend fun getProducts(): List<ProductResponse>
+    suspend fun getProducts(): ProductResponse
 
     @GET("products")
     suspend fun getProductsByName(@Query("name") name: String): ProductResponse

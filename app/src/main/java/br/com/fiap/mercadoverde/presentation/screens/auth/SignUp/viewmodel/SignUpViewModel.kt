@@ -9,7 +9,9 @@ import br.com.fiap.mercadoverde.network.services.EnderecoService
 import br.com.fiap.mercadoverde.network.services.UserService
 import br.com.fiap.mercadoverde.presentation.screens.auth.SignUp.state.SignUpUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -23,6 +25,9 @@ class SignUpViewModel @Inject constructor(
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(SignUpUiState())
     val uiState = _uiState.asStateFlow()
+
+    private val _focusEvent = MutableSharedFlow<Unit>()
+    val focusEvent: SharedFlow<Unit> = _focusEvent
 
     init {
         _uiState.update { currentState ->
@@ -112,9 +117,9 @@ class SignUpViewModel @Inject constructor(
             )
         }
 
-        _uiState.update {
-            try {
-                val address = cepService.getEnderecoByCep(zipCode)
+        try {
+            val address = cepService.getEnderecoByCep(zipCode)
+            _uiState.update {
 
                 it.copy(
                     street = address.street,
@@ -126,12 +131,13 @@ class SignUpViewModel @Inject constructor(
                     isLoading = false,
                     hasError = false
                 )
-            } catch (e: Exception) {
-                Log.e("SignUpViewModel", "Error fetching address", e)
-                _uiState.value.copy(
-                    hasError = true, isLoading = false
-                )
             }
+            _focusEvent.emit(Unit)
+        } catch (e: Exception) {
+            Log.e("SignUpViewModel", "Error fetching address", e)
+            _uiState.value.copy(
+                hasError = true, isLoading = false
+            )
         }
     }
 }

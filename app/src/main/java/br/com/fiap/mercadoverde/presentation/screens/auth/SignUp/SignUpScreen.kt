@@ -19,10 +19,14 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -46,7 +50,7 @@ fun SignUpScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    if (uiState.isLoading) MyCircularProgress("Buscando CEP..")
+    if (uiState.isLoading) MyCircularProgress("Carregando..")
     if (uiState.registerSuccess) onNavigateToHomeScreen()
 
     Content(
@@ -65,6 +69,13 @@ fun Content(
     onNavigateToHomeScreen: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
+    val focusRequester = remember { FocusRequester() }
+
+    LaunchedEffect(Unit) {
+        viewModel.focusEvent.collect {
+            focusRequester.requestFocus()
+        }
+    }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -186,7 +197,7 @@ fun Content(
                     Spacer(modifier = Modifier.width(10.dp))
 
                     BaseInputField(
-                        modifier = Modifier.weight(0.2f),
+                        modifier = Modifier.weight(0.2f).focusRequester(focusRequester),
                         onValueChange = {
                             uiState.onHouseNumberChange(it)
                         },

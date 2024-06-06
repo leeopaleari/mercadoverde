@@ -22,5 +22,5 @@ class CartItemEntity(
     val price: Double,
 
     @ColumnInfo
-    val quantity: Int
+    var quantity: Int
 )

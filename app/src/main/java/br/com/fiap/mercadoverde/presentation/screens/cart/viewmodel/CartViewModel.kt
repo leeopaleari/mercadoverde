@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import br.com.fiap.mercadoverde.data.repository.CartRepositoryImpl
 import br.com.fiap.mercadoverde.data.repository.ProductRepositoryImpl
 import br.com.fiap.mercadoverde.data.source.local.cart.CartItemEntity
+import br.com.fiap.mercadoverde.data.source.local.product.ProductEntity
 import br.com.fiap.mercadoverde.domain.models.CartItem
 import br.com.fiap.mercadoverde.domain.models.Product
 import br.com.fiap.mercadoverde.domain.models.SnackbarMessage
@@ -35,8 +36,33 @@ class CartViewModel @Inject constructor(
             _cartItems.update { cartRepository.getAll() }
         }
     }
+
+    fun addItemQty(productEntity: CartItemEntity) {
+        viewModelScope.launch {
+            cartRepository.increaseItemQty(productEntity.productId)
+            _cartItems.update { cartRepository.getAll() }
+        }
+    }
+
+    fun removeItemQty(productEntity: CartItemEntity) {
+        viewModelScope.launch {
+            if (productEntity.quantity == 1) {
+                cartRepository.delete(productEntity)
+            } else {
+                cartRepository.decreaseItemQty(productEntity.productId)
+            }
+            _cartItems.update { cartRepository.getAll() }
+        }
+    }
+
+    fun clearCartItems() {
+        viewModelScope.launch {
+            cartRepository.clearCartItems()
+            _cartItems.update { cartRepository.getAll() }
+        }
+    }
 //    private val _totalItemsInCart = MutableStateFlow(0)
-//    val totalItemsInCart: StateFlow<Int> = _totalItemsInCart
+//    val totalItemsInCart: StateFloaw<Int> = _totalItemsInCart
 //
 //    private val _snackbarEvent = MutableSharedFlow<SnackbarMessage>()
 //    val snackbarEvent: SharedFlow<SnackbarMessage> = _snackbarEvent

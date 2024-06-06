@@ -22,6 +22,32 @@ class CartRepositoryImpl @Inject constructor(private val cartDao: CartDao) {
         return cartDao.getById(productId)
     }
 
+    suspend fun increaseItemQty(productId: String): Int {
+        val product = cartDao.getById(productId)
+
+        if (product != null) {
+            product.quantity++
+            return cartDao.update(product)
+        }
+
+        return -1
+    }
+
+    suspend fun decreaseItemQty(productId: String): Int {
+        val product = cartDao.getById(productId)
+
+        if (product != null) {
+            product.quantity--
+            return cartDao.update(product)
+        }
+
+        return -1
+    }
+
+    suspend fun clearCartItems() {
+        cartDao.clearItems()
+    }
+
 //    suspend fun deleteById(productId: Long): CartItemEntity {
 //        return cartDao.deleteById(productId)
 //    }

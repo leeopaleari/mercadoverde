@@ -16,7 +16,7 @@ interface CartDao {
     suspend fun insert(cartItem: CartItemEntity)
 
     @Update
-    suspend fun update(cartItem: CartItemEntity)
+    suspend fun update(cartItem: CartItemEntity): Int
 
     @Delete
     suspend fun delete(cartItem: CartItemEntity)
@@ -26,6 +26,9 @@ interface CartDao {
 
     @Query("DELETE FROM cart_items WHERE productId = :productId")
     suspend fun deleteById(productId: String)
+
+    @Query("DELETE FROM cart_items")
+    suspend fun clearItems()
 }
 
 //@Dao

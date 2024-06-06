@@ -131,7 +131,6 @@ class HomeViewModel @Inject constructor(
                 }
             } catch (t: Throwable) {
                 Log.e("HomeViewModel", "Error addToCart: ${t.message}", t)
-
             }
         }
     }

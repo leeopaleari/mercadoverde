@@ -22,13 +22,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.painter.BitmapPainter
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -39,12 +37,10 @@ import br.com.fiap.mercadoverde.presentation.theme.PrimaryColor
 import br.com.fiap.mercadoverde.presentation.theme.TextLightColor
 import br.com.fiap.mercadoverde.utils.decodeBase64ToBitmap
 import br.com.fiap.mercadoverde.utils.formatCurrency
-import kotlinx.coroutines.launch
 
 @Composable
 fun CartScreen(viewModel: CartViewModel = hiltViewModel()) {
     val cartItems by viewModel.cartItems.collectAsState()
-    val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(key1 = Unit) {
         viewModel.loadCartItems()
@@ -53,7 +49,6 @@ fun CartScreen(viewModel: CartViewModel = hiltViewModel()) {
     Column(
         modifier = Modifier
             .fillMaxSize(),
-//        verticalArrangement = Arrangement.Center
     ) {
 
         if (cartItems.isEmpty()) {
@@ -81,9 +76,7 @@ fun CartScreen(viewModel: CartViewModel = hiltViewModel()) {
                 horizontalArrangement = Arrangement.End
             ) {
                 TextButton(onClick = {
-                    coroutineScope.launch {
-//                        viewModel.clearCartItems()
-                    }
+                    viewModel.clearCartItems()
                 }) {
                     Text(
                         text = "Limpar carrinho",
@@ -142,7 +135,7 @@ fun CartScreen(viewModel: CartViewModel = hiltViewModel()) {
                                     color = TextLightColor
                                 )
                                 Text(
-                                    text = formatCurrency(item.price.toDouble()),
+                                    text = formatCurrency(item.price),
                                     fontSize = 20.sp,
                                     fontWeight = FontWeight.ExtraBold,
                                     fontFamily = Inter,
@@ -168,9 +161,7 @@ fun CartScreen(viewModel: CartViewModel = hiltViewModel()) {
                             ) {
                                 OutlinedButton(
                                     onClick = {
-//                                        coroutineScope.launch {
-//                                            viewModel.removeItemQty(item)
-//                                        }
+                                        viewModel.removeItemQty(item)
                                     },
                                     modifier = Modifier.weight(1f),
                                     contentPadding = PaddingValues(
@@ -190,9 +181,7 @@ fun CartScreen(viewModel: CartViewModel = hiltViewModel()) {
 
                                 OutlinedButton(
                                     onClick = {
-//                                        coroutineScope.launch {
-//                                            viewModel.addItemQty(item)
-//                                        }
+                                        viewModel.addItemQty(item)
                                     },
                                     modifier = Modifier.weight(1f),
                                     contentPadding = PaddingValues(

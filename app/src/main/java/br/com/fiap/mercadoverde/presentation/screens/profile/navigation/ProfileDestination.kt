@@ -7,8 +7,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import br.com.fiap.mercadoverde.presentation.navigation.INavigationDestination
-import br.com.fiap.mercadoverde.presentation.screens.auth.AuthDestination
-import br.com.fiap.mercadoverde.presentation.screens.home.navigation.HomeDestination
+import br.com.fiap.mercadoverde.presentation.screens.auth.navigation.AuthDestination
 import br.com.fiap.mercadoverde.presentation.screens.profile.ProfileScreen
 
 object ProfileDestination : INavigationDestination {

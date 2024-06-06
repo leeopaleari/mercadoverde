@@ -8,7 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.fiap.mercadoverde.data.repository.ProductRepositoryImpl
-import br.com.fiap.mercadoverde.domain.models.Product
+import br.com.fiap.mercadoverde.data.source.local.product.ProductEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,8 +18,8 @@ class CartViewModel @Inject constructor(
     private val productRepository: ProductRepositoryImpl
 ) : ViewModel() {
 
-    private val _cartItems = MutableLiveData<List<Product>>(emptyList())
-    val cartItems: MutableLiveData<List<Product>> = _cartItems
+    private val _cartItems = MutableLiveData<List<ProductEntity>>(emptyList())
+    val cartItems: MutableLiveData<List<ProductEntity>> = _cartItems
 
     private var _onLoading by mutableStateOf(false)
 //    val onLoading: Boolean
@@ -40,32 +40,32 @@ class CartViewModel @Inject constructor(
         }
     }
 
-    suspend fun addItemToCart(product: Product) {
+    suspend fun addItemToCart(productEntity: ProductEntity) {
         viewModelScope.launch {
-            val itemExists = _cartItems.value?.find { it.id == product.id }
+            val itemExists = _cartItems.value?.find { it.id == productEntity.id }
 
             if (itemExists !== null) {
-                productRepository.delete(product)
+                productRepository.delete(productEntity)
             } else {
-                productRepository.insert(product)
+                productRepository.insert(productEntity)
             }
             _cartItems.postValue(productRepository.getAll())
         }
     }
 
-    suspend fun addItemQty(product: Product) {
+    suspend fun addItemQty(productEntity: ProductEntity) {
         viewModelScope.launch {
-            productRepository.increaseItemQty(product.id)
+            productRepository.increaseItemQty(productEntity.id)
             _cartItems.postValue(productRepository.getAll())
         }
     }
 
-    suspend fun removeItemQty(product: Product) {
+    suspend fun removeItemQty(productEntity: ProductEntity) {
         viewModelScope.launch {
-            if (product.quantidade == 1) {
-                productRepository.delete(product)
+            if (productEntity.quantidade == 1) {
+                productRepository.delete(productEntity)
             } else {
-                productRepository.decreaseItemQty(product.id)
+                productRepository.decreaseItemQty(productEntity.id)
             }
             _cartItems.postValue(productRepository.getAll())
         }

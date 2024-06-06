@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import br.com.fiap.mercadoverde.presentation.theme.PrimaryColor
 
 @Composable
 fun MyCircularProgress(
@@ -27,7 +28,8 @@ fun MyCircularProgress(
         contentAlignment = Alignment.Center
     ) {
         CircularProgressIndicator(
-            modifier = Modifier.size(80.dp)
+            modifier = Modifier.size(80.dp),
+            color = PrimaryColor
         )
         Text(text, modifier = Modifier.offset(y = 55.dp))
     }

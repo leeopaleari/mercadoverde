@@ -58,12 +58,12 @@ val TOP_LEVEL_DESTINATIONS = listOf(
         unselectedIcon = Icons.Outlined.ShoppingCart,
         iconText = "Carrinho"
     ),
-    TopLevelDestination(
-        route = OrdersDestination.route,
-        selectedIcon = Icons.Filled.Menu,
-        unselectedIcon = Icons.Outlined.Menu,
-        iconText = "Pedidos"
-    ),
+//    TopLevelDestination(
+//        route = OrdersDestination.route,
+//        selectedIcon = Icons.Filled.Menu,
+//        unselectedIcon = Icons.Outlined.Menu,
+//        iconText = "Pedidos"
+//    ),
     TopLevelDestination(
         route = ProfileDestination.route,
         selectedIcon = Icons.Filled.Person,

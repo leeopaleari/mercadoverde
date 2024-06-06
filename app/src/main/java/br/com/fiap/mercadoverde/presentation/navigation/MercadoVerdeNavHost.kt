@@ -33,7 +33,8 @@ fun MercadoVerdeNavHost(
         )
         cartGraph(
             navController = navController,
-            bottomBarVisibility = bottomBarVisibility
+            bottomBarVisibility = bottomBarVisibility,
+            snackbarHostState = snackbarHostState
         )
         ordersGraph(
             navController = navController,

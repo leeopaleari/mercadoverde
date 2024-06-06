@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -16,6 +17,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -31,6 +33,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import br.com.fiap.mercadoverde.presentation.components.button.BaseButton
 import br.com.fiap.mercadoverde.presentation.screens.cart.viewmodel.CartViewModel
 import br.com.fiap.mercadoverde.presentation.theme.Inter
 import br.com.fiap.mercadoverde.presentation.theme.PrimaryColor
@@ -39,13 +42,21 @@ import br.com.fiap.mercadoverde.utils.decodeBase64ToBitmap
 import br.com.fiap.mercadoverde.utils.formatCurrency
 
 @Composable
-fun CartScreen(viewModel: CartViewModel = hiltViewModel()) {
+fun CartScreen(viewModel: CartViewModel = hiltViewModel(), snackbarHostState: SnackbarHostState) {
     val cartItems by viewModel.cartItems.collectAsState()
+    val totalAmount by viewModel.totalAmount.collectAsState()
 
     LaunchedEffect(key1 = Unit) {
         viewModel.loadCartItems()
     }
 
+    val snackbarEvent by viewModel.snackbarEvent.collectAsState(initial = null)
+
+    LaunchedEffect(snackbarEvent) {
+        snackbarEvent?.let { snackbarMessage ->
+            snackbarHostState.showSnackbar(snackbarMessage.message)
+        }
+    }
     Column(
         modifier = Modifier
             .fillMaxSize(),
@@ -59,6 +70,8 @@ fun CartScreen(viewModel: CartViewModel = hiltViewModel()) {
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
+
+
                 Text(
                     text = "Nenhum item adicionado no carrinho",
                     fontFamily = Inter,
@@ -73,8 +86,18 @@ fun CartScreen(viewModel: CartViewModel = hiltViewModel()) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 8.dp),
-                horizontalArrangement = Arrangement.End
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
+
+                Text(
+                    text = "Total:  ${formatCurrency(totalAmount)}",
+                    fontFamily = Inter,
+                    fontSize = 18.sp,
+                    color = TextLightColor,
+                    modifier = Modifier
+                        .padding(start = 16.dp, top = 10.dp),
+                )
+
                 TextButton(onClick = {
                     viewModel.clearCartItems()
                 }) {
@@ -86,9 +109,7 @@ fun CartScreen(viewModel: CartViewModel = hiltViewModel()) {
                     )
                 }
             }
-            LazyColumn {
 
-            }
             LazyColumn(
                 modifier = Modifier
                     .weight(2f)
@@ -196,6 +217,18 @@ fun CartScreen(viewModel: CartViewModel = hiltViewModel()) {
                         }
                     }
                 }
+            }
+
+            if (cartItems.isNotEmpty()) {
+                BaseButton(
+                    text = "Fechar pedido",
+                    onClick = { viewModel.createOrder() },
+                    modifier = Modifier
+                        .fillMaxWidth(0.7f)
+                        .align(Alignment.CenterHorizontally)
+                )
+
+                Spacer(modifier = Modifier.height(20.dp))
             }
         }
 

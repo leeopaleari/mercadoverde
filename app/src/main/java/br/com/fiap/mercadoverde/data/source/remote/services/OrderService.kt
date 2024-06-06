@@ -11,7 +11,7 @@ import retrofit2.http.Path
 interface OrderService {
 
     @POST("orders")
-    suspend fun createOrder(@Header("Authorization") token: String, @Body request: CreateOrderRequest): OrderResponse
+    suspend fun createOrder(@Body request: CreateOrderRequest): OrderResponse
 
     @GET("orders")
     suspend fun getOrders(@Header("Authorization") token: String): List<OrderResponse>

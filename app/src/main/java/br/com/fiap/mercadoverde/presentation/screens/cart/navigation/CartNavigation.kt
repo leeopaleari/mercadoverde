@@ -1,5 +1,6 @@
 package br.com.fiap.mercadoverde.presentation.screens.cart.navigation
 
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.navigation.NavController
@@ -15,11 +16,12 @@ object CartDestination : INavigationDestination {
 fun NavGraphBuilder.cartGraph(
     navController: NavController,
     bottomBarVisibility: MutableState<Boolean>,
+    snackbarHostState: SnackbarHostState
 ) {
     composable(route = CartDestination.route) {
         LaunchedEffect(null) {
             bottomBarVisibility.value = true
         }
-        CartScreen()
+        CartScreen(snackbarHostState = snackbarHostState)
     }
 }

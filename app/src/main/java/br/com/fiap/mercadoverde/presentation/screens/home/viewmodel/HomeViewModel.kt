@@ -31,6 +31,10 @@ class HomeViewModel @Inject constructor(
     private val _snackbarEvent = MutableSharedFlow<SnackbarMessage>()
     val snackbarEvent: SharedFlow<SnackbarMessage> = _snackbarEvent
 
+
+    private val _searchQuery = MutableStateFlow("")
+    val searchQuery = _searchQuery.asStateFlow()
+
     init {
         viewModelScope.launch {
             loadAllData()
@@ -97,12 +101,24 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+
+    fun updateSearchQuery(query: String) {
+        _searchQuery.value = query
+        filterProducts()
+    }
+
+    private fun filterProducts() {
+        val query = _searchQuery.value.lowercase()
+        val filteredProducts = _uiState.value.products.filter { product ->
+            product.name.lowercase().contains(query)
+        }
+        _uiState.update { it.copy(filteredProducts = filteredProducts) }
+    }
+
     fun addToCart(product: Product) {
         viewModelScope.launch {
 
             try {
-
-
                 val productExists = cartRepository.getById(product.id)
 
                 if (productExists == null) {
@@ -144,6 +160,7 @@ class HomeViewModel @Inject constructor(
             _uiState.update {
                 it.copy(
                     products = productResponse.products,
+                    filteredProducts = productResponse.products,
                     categories = categoryResponse.categories,
                     isLoading = false
                 )

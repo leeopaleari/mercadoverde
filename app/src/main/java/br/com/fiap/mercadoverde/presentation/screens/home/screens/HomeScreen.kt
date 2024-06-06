@@ -31,7 +31,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import br.com.fiap.mercadoverde.R
 import br.com.fiap.mercadoverde.presentation.components.CustomTextField
 import br.com.fiap.mercadoverde.presentation.components.MyCircularProgress
-import br.com.fiap.mercadoverde.presentation.screens.cart.viewmodel.CartViewModel
 import br.com.fiap.mercadoverde.presentation.screens.home.composables.CategoryCard
 import br.com.fiap.mercadoverde.presentation.screens.home.composables.ProductCard
 import br.com.fiap.mercadoverde.presentation.screens.home.state.HomeScreenUiState
@@ -61,13 +60,14 @@ fun HomeScreen(
 fun Content(homeViewModel: HomeViewModel) {
 
     val uiState by homeViewModel.uiState.collectAsState()
+    val searchQuery by homeViewModel.searchQuery.collectAsState()
 
     Column(
         modifier = Modifier
             .fillMaxSize()
     ) {
 
-        SearchBar()
+        SearchBar(onSearchQueryChange = { homeViewModel.updateSearchQuery(it) })
 
         Spacer(modifier = Modifier.height(12.dp))
 
@@ -79,7 +79,7 @@ fun Content(homeViewModel: HomeViewModel) {
 
         if (uiState.isLoading) {
             MyCircularProgress(text = "Buscando Produtos...", showBackground = false)
-        } else if (uiState.products.isEmpty()) {
+        } else if (uiState.filteredProducts.isEmpty()) {
             NothingFound()
         } else {
             LazyVerticalGrid(
@@ -92,7 +92,7 @@ fun Content(homeViewModel: HomeViewModel) {
                     bottom = 16.dp
                 )
             ) {
-                items(uiState.products) { product ->
+                items(uiState.filteredProducts) { product ->
                     ProductCard(
                         product = product,
                         onSelectProduct = {
@@ -124,7 +124,9 @@ fun NothingFound() {
 }
 
 @Composable
-fun SearchBar() {
+fun SearchBar(
+    onSearchQueryChange: (String) -> Unit
+) {
     Box(
         modifier = Modifier.padding(16.dp),
 
@@ -143,8 +145,8 @@ fun SearchBar() {
             trailingIcon = null,
             fontSize = 14.sp,
             placeholderText = "Buscar por nome...",
-            onChange = {
-            })
+            onChange = onSearchQueryChange
+        )
     }
 }
 

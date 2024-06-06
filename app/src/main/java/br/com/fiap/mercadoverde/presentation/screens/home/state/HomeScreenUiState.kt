@@ -7,7 +7,7 @@ data class HomeScreenUiState(
     val products: List<Product> = emptyList(),
     val categories: List<Category> = emptyList(),
     val selectedCategory: String? = null,
-
+    val filteredProducts: List<Product> = emptyList(),
     val isLoading: Boolean = false,
     val errorMessage: String? = null
 )

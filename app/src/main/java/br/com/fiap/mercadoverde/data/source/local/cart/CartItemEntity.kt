@@ -19,7 +19,7 @@ class CartItemEntity(
     val image: String,
 
     @ColumnInfo
-    val price: Int,
+    val price: Double,
 
     @ColumnInfo
     val quantity: Int

@@ -112,7 +112,7 @@ class HomeViewModel @Inject constructor(
                         name = product.name,
                         image = product.image,
                         quantity = 1,
-                        price = product.price
+                        price = product.priceMonetary
                     )
                     cartRepository.insert(cartItem)
                     _snackbarEvent.emit(

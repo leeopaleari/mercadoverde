@@ -11,7 +11,7 @@ import br.com.fiap.mercadoverde.presentation.screens.auth.navigation.authGraph
 import br.com.fiap.mercadoverde.presentation.screens.cart.navigation.cartGraph
 import br.com.fiap.mercadoverde.presentation.screens.home.navigation.homeGraph
 import br.com.fiap.mercadoverde.presentation.screens.profile.navigation.profileGraph
-import br.com.fiap.mercadoverde.presentation.screens.search.navigation.searchGraph
+import br.com.fiap.mercadoverde.presentation.screens.search.navigation.ordersGraph
 
 @Composable
 fun MercadoVerdeNavHost(
@@ -35,7 +35,7 @@ fun MercadoVerdeNavHost(
             navController = navController,
             bottomBarVisibility = bottomBarVisibility
         )
-        searchGraph(
+        ordersGraph(
             navController = navController,
             bottomBarVisibility = bottomBarVisibility
         )

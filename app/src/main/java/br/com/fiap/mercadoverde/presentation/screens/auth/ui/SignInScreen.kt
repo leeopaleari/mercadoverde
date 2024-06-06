@@ -46,11 +46,11 @@ fun SignInScreen(
     snackbarHostState: SnackbarHostState
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    val snackbarEvent = viewModel.snackbarEvent.collectAsState(initial = null)
+    val snackbarEvent by viewModel.snackbarEvent.collectAsState(initial = null)
 
-    LaunchedEffect(snackbarEvent.value) {
-        snackbarEvent.value?.let { message ->
-            snackbarHostState.showSnackbar(message)
+    LaunchedEffect(snackbarEvent) {
+        snackbarEvent?.let { snackbarMessage ->
+            snackbarHostState.showSnackbar(snackbarMessage.message)
         }
     }
 
@@ -131,7 +131,7 @@ fun SignInScreen(
                     onClick = {
                         uiState.onLoginClick()
 
-                        if(uiState.isLoginSuccess) {
+                        if (uiState.isLoginSuccess) {
                             onNavigateToHomeScreen()
                         }
                     },

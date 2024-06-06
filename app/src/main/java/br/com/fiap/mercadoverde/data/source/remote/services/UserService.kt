@@ -20,7 +20,7 @@ interface UserService {
     suspend fun loginUser(@Body request: LoginRequest): LoginResponse
 
     @GET("users/profile")
-    suspend fun getProfile(@Header("Authorization") token: String): ProfileResponse
+    suspend fun getProfile(): ProfileResponse
 
     @PUT("users/profile")
     suspend fun updateProfile(@Header("Authorization") token: String, @Body request: UpdateProfileRequest): ProfileResponse

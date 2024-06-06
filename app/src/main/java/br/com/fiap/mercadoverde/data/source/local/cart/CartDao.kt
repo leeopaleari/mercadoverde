@@ -30,21 +30,3 @@ interface CartDao {
     @Query("DELETE FROM cart_items")
     suspend fun clearItems()
 }
-
-//@Dao
-//interface CartDao {
-//    @Query("SELECT * FROM cart_items")
-//    suspend fun getAll(): List<CartItemEntity>
-//
-//    @Insert(onConflict = OnConflictStrategy.REPLACE)
-//    suspend fun insert(cartItem: CartItemEntity): Long
-//
-//    @Update
-//    suspend fun update(cartItem: CartItemEntity)
-//
-//    @Delete
-//    suspend fun delete(cartItem: CartItemEntity): Int
-//
-//    @Query("DELETE FROM cart_items WHERE productId = :productId")
-//    suspend fun deleteById(productId: String): Int
-//}

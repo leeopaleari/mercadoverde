@@ -23,13 +23,18 @@ data class LoginRequest(val email: String, val password: String)
 data class LoginResponse(val accessToken: String)
 
 data class ProfileResponse(
+    val user: Profile
+)
+data class Profile(
     val name: String,
     val email: String,
     val street: String,
     val houseNumber: String,
     val city: String,
     val country: String,
-    val zipCode: String
+    val zipCode: String,
+    val neighborhood: String,
+    val state: String
 )
 
 data class UpdateProfileRequest(

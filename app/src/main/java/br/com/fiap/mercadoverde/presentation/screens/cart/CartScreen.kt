@@ -199,23 +199,6 @@ fun CartScreen(viewModel: CartViewModel = hiltViewModel()) {
             }
         }
 
-//        if (cartItems.isNotEmpty())
-//            Box(
-//                modifier = Modifier
-//                    .background(color = PrimaryColor)
-//                    .padding(vertical = 8.dp)
-//                    .fillMaxWidth(),
-//                contentAlignment = Alignment.Center
-//            ) {
-//                Text(
-//                    text = formatCurrency(cartItems.sumOf { it.preco.toDouble() * it.quantidade }
-//                        .toFloat()),
-//                    color = Color.White,
-//                    fontSize = 24.sp,
-//                    fontWeight = FontWeight.ExtraBold,
-//                    fontFamily = Inter,
-//                )
-//            }
     }
 
 }

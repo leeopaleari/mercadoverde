@@ -82,8 +82,8 @@ class SignUpViewModel @Inject constructor(
             country = uiState.value.country,
             city = uiState.value.city,
             zipCode = uiState.value.zipCode,
-            state = uiState.value.zipCode,
-            neighborhood = uiState.value.zipCode
+            state = uiState.value.state,
+            neighborhood = uiState.value.neighborhood
         )
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, hasError = false) }

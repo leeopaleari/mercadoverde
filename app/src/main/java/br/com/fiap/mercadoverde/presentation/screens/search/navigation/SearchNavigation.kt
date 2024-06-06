@@ -6,21 +6,21 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import br.com.fiap.mercadoverde.presentation.navigation.INavigationDestination
-import br.com.fiap.mercadoverde.presentation.screens.search.SearchScreen
+import br.com.fiap.mercadoverde.presentation.screens.search.OrdersScreen
 
-object SearchDestination : INavigationDestination {
-    override val route = "search_route"
-    override val destination = "search_destination"
+object OrdersDestination : INavigationDestination {
+    override val route = "orders_route"
+    override val destination = "orders_destination"
 }
 
-fun NavGraphBuilder.searchGraph(
+fun NavGraphBuilder.ordersGraph(
     navController: NavController,
     bottomBarVisibility: MutableState<Boolean>,
 ) {
-    composable(route = SearchDestination.route) {
+    composable(route = OrdersDestination.route) {
         LaunchedEffect(null) {
             bottomBarVisibility.value = true
         }
-        SearchScreen()
+        OrdersScreen()
     }
 }

@@ -43,7 +43,6 @@ import br.com.fiap.mercadoverde.presentation.theme.TextLightColor
 @Composable
 fun HomeScreen(
     homeViewModel: HomeViewModel = hiltViewModel(),
-    cartViewModel: CartViewModel = hiltViewModel(),
     snackbarHostState: SnackbarHostState
 ) {
     val snackbarEvent by homeViewModel.snackbarEvent.collectAsState(initial = null)
@@ -55,11 +54,11 @@ fun HomeScreen(
     }
 
 
-    Content(homeViewModel = homeViewModel, cartViewModel = cartViewModel)
+    Content(homeViewModel = homeViewModel)
 }
 
 @Composable
-fun Content(homeViewModel: HomeViewModel, cartViewModel: CartViewModel) {
+fun Content(homeViewModel: HomeViewModel) {
 
     val uiState by homeViewModel.uiState.collectAsState()
 

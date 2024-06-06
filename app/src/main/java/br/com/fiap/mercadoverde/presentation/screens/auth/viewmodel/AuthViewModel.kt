@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import br.com.fiap.mercadoverde.domain.services.SecureStorageService
 import br.com.fiap.mercadoverde.data.source.remote.model.LoginRequest
 import br.com.fiap.mercadoverde.data.source.remote.services.UserService
+import br.com.fiap.mercadoverde.domain.models.SnackbarMessage
 import br.com.fiap.mercadoverde.presentation.screens.auth.state.SignInUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -24,8 +25,8 @@ class AuthViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(SignInUiState())
     val uiState = _uiState.asStateFlow()
 
-    private val _snackbarEvent = MutableSharedFlow<String>()
-    val snackbarEvent: SharedFlow<String> = _snackbarEvent
+    private val _snackbarEvent = MutableSharedFlow<SnackbarMessage>()
+    val snackbarEvent: SharedFlow<SnackbarMessage> = _snackbarEvent
 
     init {
         if (!secureStorage.getAccessToken().isNullOrEmpty()) {
@@ -82,7 +83,12 @@ class AuthViewModel @Inject constructor(
                     isLoginSuccess = false
                 )
 
-                _snackbarEvent.emit(errorMessage)
+                _snackbarEvent.emit(
+                    SnackbarMessage(
+                        errorMessage,
+                        System.currentTimeMillis()
+                    )
+                )
             } finally {
                 _uiState.value = _uiState.value.copy(isLoading = false)
             }

@@ -1,6 +1,5 @@
 package br.com.fiap.mercadoverde.presentation.screens.home.composables
 
-import android.service.autofill.OnClickAction
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,10 +12,12 @@ import androidx.compose.material3.CardColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.unit.dp
-import br.com.fiap.mercadoverde.presentation.screens.home.Category
+import br.com.fiap.mercadoverde.domain.models.Category
 import br.com.fiap.mercadoverde.presentation.theme.PrimaryColor
+import br.com.fiap.mercadoverde.utils.decodeBase64ToBitmap
 
 @Composable
 fun CategoryCard(category: Category, onCategoryClick: () -> Unit = {}, selected: Boolean = false) {
@@ -40,10 +41,13 @@ fun CategoryCard(category: Category, onCategoryClick: () -> Unit = {}, selected:
             onCategoryClick()
         }
     ) {
+        val bitmap = decodeBase64ToBitmap(category.image)
         Image(
-            modifier = Modifier.fillMaxSize().padding(10.dp),
-            painter = painterResource(id = category.imagem),
-            contentDescription = "Imagem categoria ${category.nome}"
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(10.dp),
+            painter = BitmapPainter(bitmap.asImageBitmap()),
+            contentDescription = "Imagem categoria ${category.name}"
         )
     }
 }

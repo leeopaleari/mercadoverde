@@ -14,8 +14,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import br.com.fiap.mercadoverde.presentation.screens.auth.SignIn.viewmodel.AuthViewModel
 import br.com.fiap.mercadoverde.presentation.screens.profile.viewmodel.ProfileScreeViewModel
 import br.com.fiap.mercadoverde.presentation.theme.Inter
 

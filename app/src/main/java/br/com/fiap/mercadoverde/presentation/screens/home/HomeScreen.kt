@@ -8,132 +8,80 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Icon
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import br.com.fiap.mercadoverde.R
 import br.com.fiap.mercadoverde.presentation.components.CustomTextField
 import br.com.fiap.mercadoverde.presentation.components.MyCircularProgress
+import br.com.fiap.mercadoverde.presentation.screens.home.composables.CategoryCard
 import br.com.fiap.mercadoverde.presentation.screens.home.composables.ProductCard
+import br.com.fiap.mercadoverde.presentation.screens.home.uistate.HomeScreenUiState
 import br.com.fiap.mercadoverde.presentation.screens.home.viewmodel.HomeViewModel
-
-data class Category(
-    val nome: String,
-    val imagem: Int
-)
+import br.com.fiap.mercadoverde.presentation.theme.Inter
+import br.com.fiap.mercadoverde.presentation.theme.TextColor
+import br.com.fiap.mercadoverde.presentation.theme.TextLightColor
 
 @Composable
 fun HomeScreen(
     homeViewModel: HomeViewModel = hiltViewModel(),
+    snackbarHostState: SnackbarHostState
 ) {
-    val uiState by homeViewModel.uiState.collectAsState()
-    var selectedCategory by remember {
-        mutableStateOf("")
+    val snackbarEvent by homeViewModel.snackbarEvent.collectAsState(initial = null)
+
+    LaunchedEffect(snackbarEvent) {
+        snackbarEvent?.let { snackbarMessage ->
+            snackbarHostState.showSnackbar(snackbarMessage.message)
+        }
     }
 
-//    val coroutineScope = rememberCoroutineScope()
 
-//    val categoryList by homeViewModel.categoryList.observeAsState(initial = emptyList())
-//    val productList by homeViewModel.productList.observeAsState(initial = emptyList())
-//
-//    val filteredProductList = remember {
-//        mutableStateOf(productList)
-//    }
+    Content(viewModel = homeViewModel)
+}
 
-//    val cartItems by cartViewModel.cartItems.observeAsState()
+@Composable
+fun Content(viewModel: HomeViewModel) {
 
-//    LaunchedEffect(key1 = Unit) {
-//        cartViewModel.loadCartItems()
-//        snackbarHostState.showSnackbar(
-//            message = "Mensagem do Snackbar"
-//        )
-//    }
+    val uiState by viewModel.uiState.collectAsState()
 
     Column(
         modifier = Modifier
             .fillMaxSize()
     ) {
-//        Box(
-//            modifier = Modifier.padding(16.dp),
-//
-//            ) {
-//
-//            CustomTextField(
-//                leadingIcon = {
-//
-//                    Icon(
-//                        painter = painterResource(id = R.drawable.baseline_search_24),
-//                        contentDescription = "icone lupa",
-//                        tint = Color(0xFF49454F)
-//                    )
-//
-//                },
-//                trailingIcon = null,
-//                fontSize = 14.sp,
-//                placeholderText = "Buscar por nome...",
-//                onChange = {
-////                onSearchTextChange(it)
-//                })
-//        }
-//        Spacer(modifier = Modifier.height(12.dp))
 
-//        LazyRow(
-//            contentPadding = PaddingValues(
-//                start = 16.dp,
-//                end = 16.dp,
-//            ),
-//            horizontalArrangement = Arrangement.spacedBy(10.dp)
-//        ) {
-//            items(categoryList) { category ->
-//                Column(
-//                    horizontalAlignment = Alignment.CenterHorizontally
-//                ) {
-//                    CategoryCard(
-//                        category = category,
-//                        onCategoryClick = {
-//                            if (selectedCategory == category.nome) {
-//                                selectedCategory = ""
-//                                filteredProductList.value = productList
-//                            } else {
-//                                selectedCategory = category.nome
-//                                filteredProductList.value =
-//                                    productList.filter {
-//                                        it.categoria.contains(
-//                                            selectedCategory,
-//                                            ignoreCase = true
-//                                        )
-//                                    }
-//                            }
-//                        },
-//                        selected = category.nome == selectedCategory
-//                    )
-//                    Text(text = category.nome, fontFamily = Inter, color = TextColor)
-//                }
-//            }
-//        }
+        SearchBar()
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Categories(uiState = uiState, onCategoryClick = { categoryName ->
+            viewModel.selectCategory(categoryName)
+        })
+
         Spacer(modifier = Modifier.height(16.dp))
 
         if (uiState.isLoading) {
-            MyCircularProgress(text = "Buscando Produtos", showBackground = false)
+            MyCircularProgress(text = "Buscando Produtos...", showBackground = false)
         } else if (uiState.products.isEmpty()) {
-            Text(text = "No products found")
+            NothingFound()
         } else {
             LazyVerticalGrid(
-//                modifier = Modifier.fillMaxSize(),
                 columns = GridCells.Fixed(2),
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp),
@@ -147,15 +95,80 @@ fun HomeScreen(
                     ProductCard(
                         product = product,
                         onSelectProduct = {
-//                        coroutineScope.launch {
-////                            cartViewModel.addItemToCart(product)
-//                        }
+                            viewModel.addToCart(product)
                         },
-//                    selected = cartItems!!.any { it.id == product.id }
                     )
                 }
             }
         }
     }
+}
 
+@Composable
+fun NothingFound() {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = "Nenhum produto \n encontrado :(",
+            fontFamily = Inter,
+            color = TextLightColor,
+            fontSize = 24.sp,
+            textAlign = TextAlign.Center
+        )
+
+    }
+}
+
+@Composable
+fun SearchBar() {
+    Box(
+        modifier = Modifier.padding(16.dp),
+
+        ) {
+
+        CustomTextField(
+            leadingIcon = {
+
+                Icon(
+                    painter = painterResource(id = R.drawable.baseline_search_24),
+                    contentDescription = "icone lupa",
+                    tint = Color(0xFF49454F)
+                )
+
+            },
+            trailingIcon = null,
+            fontSize = 14.sp,
+            placeholderText = "Buscar por nome...",
+            onChange = {
+            })
+    }
+}
+
+@Composable
+fun Categories(uiState: HomeScreenUiState, onCategoryClick: (String) -> Unit) {
+    LazyRow(
+        contentPadding = PaddingValues(
+            start = 16.dp,
+            end = 16.dp,
+        ),
+        horizontalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        items(uiState.categories) { category ->
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                CategoryCard(
+                    category = category,
+                    onCategoryClick = {
+                        onCategoryClick(category.name)
+                    },
+                    selected = category.name == uiState.selectedCategory
+                )
+                Text(text = category.name, fontFamily = Inter, color = TextColor)
+            }
+        }
+    }
 }

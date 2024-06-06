@@ -1,0 +1,51 @@
+package br.com.fiap.mercadoverde.data.di
+
+import android.content.Context
+import androidx.room.Room
+import br.com.fiap.mercadoverde.data.source.local.product.ProductDao
+import br.com.fiap.mercadoverde.data.source.local.product.ProductDatabase
+import br.com.fiap.mercadoverde.data.repository.ProductRepositoryImpl
+import br.com.fiap.mercadoverde.domain.services.SecureStorageService
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
+
+@Module
+@InstallIn(SingletonComponent::class)
+object Injection {
+
+    @Provides
+    @Singleton
+    fun provideAppDatabase(@ApplicationContext appContext: Context): ProductDatabase {
+        return Room.databaseBuilder(
+            appContext,
+            ProductDatabase::class.java,
+            "CART_DB"
+        )
+            .allowMainThreadQueries()
+            .fallbackToDestructiveMigration()
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideProductDao(appDatabase: ProductDatabase): ProductDao {
+        return appDatabase.productDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideProductRepository(productDao: ProductDao): ProductRepositoryImpl {
+        return ProductRepositoryImpl(productDao)
+    }
+
+    @Singleton
+    @Provides
+    fun provideSecureStorage(@ApplicationContext context: Context): SecureStorageService {
+        return SecureStorageService(context)
+    }
+
+}

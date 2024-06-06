@@ -8,14 +8,8 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.consumeWindowInsets
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -33,14 +27,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.zIndex
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import br.com.fiap.mercadoverde.presentation.components.AppHeader
 import br.com.fiap.mercadoverde.presentation.navigation.MercadoVerdeNavHost
 import br.com.fiap.mercadoverde.presentation.navigation.TOP_LEVEL_DESTINATIONS
 import br.com.fiap.mercadoverde.presentation.navigation.TopLevelDestination
@@ -84,18 +75,6 @@ fun MercadoVerdeApp() {
                 SnackbarHost(hostState = snackbarHostState)
             },
             containerColor = BgColor,
-            topBar = {
-                AnimatedVisibility(
-                    visible = bottomBarVisibility.value,
-                    enter = slideInVertically(initialOffsetY = { it }),
-                    exit = slideOutVertically(targetOffsetY = { it }),
-                    content = {
-                        AppHeader(cartSize = 1) {
-
-                        }
-                    }
-                )
-            },
             bottomBar = {
                 Box {
                     AnimatedVisibility(

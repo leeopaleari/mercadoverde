@@ -2,9 +2,11 @@ package br.com.fiap.mercadoverde.data.di
 
 import android.content.Context
 import androidx.room.Room
-import br.com.fiap.mercadoverde.data.source.local.product.ProductDao
-import br.com.fiap.mercadoverde.data.source.local.product.ProductDatabase
+import br.com.fiap.mercadoverde.data.repository.CartRepositoryImpl
 import br.com.fiap.mercadoverde.data.repository.ProductRepositoryImpl
+import br.com.fiap.mercadoverde.data.source.local.AppDatabase
+import br.com.fiap.mercadoverde.data.source.local.cart.CartDao
+import br.com.fiap.mercadoverde.data.source.local.product.ProductDao
 import br.com.fiap.mercadoverde.domain.services.SecureStorageService
 import dagger.Module
 import dagger.Provides
@@ -19,10 +21,10 @@ object Injection {
 
     @Provides
     @Singleton
-    fun provideAppDatabase(@ApplicationContext appContext: Context): ProductDatabase {
+    fun provideAppDatabase(@ApplicationContext appContext: Context): AppDatabase {
         return Room.databaseBuilder(
             appContext,
-            ProductDatabase::class.java,
+            AppDatabase::class.java,
             "CART_DB"
         )
             .allowMainThreadQueries()
@@ -32,8 +34,20 @@ object Injection {
 
     @Provides
     @Singleton
-    fun provideProductDao(appDatabase: ProductDatabase): ProductDao {
+    fun provideProductDao(appDatabase: AppDatabase): ProductDao {
         return appDatabase.productDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideCartDao(appDatabase: AppDatabase): CartDao {
+        return appDatabase.cartDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideCartRepository(cartDao: CartDao): CartRepositoryImpl {
+        return CartRepositoryImpl(cartDao)
     }
 
     @Provides

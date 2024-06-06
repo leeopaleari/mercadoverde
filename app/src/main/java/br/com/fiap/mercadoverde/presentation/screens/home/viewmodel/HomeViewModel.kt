@@ -3,8 +3,12 @@ package br.com.fiap.mercadoverde.presentation.screens.home.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import br.com.fiap.mercadoverde.data.repository.CartRepositoryImpl
+import br.com.fiap.mercadoverde.data.source.local.cart.CartItemEntity
 import br.com.fiap.mercadoverde.data.source.remote.services.ProductService
 import br.com.fiap.mercadoverde.domain.models.Product
+import br.com.fiap.mercadoverde.domain.models.SnackbarMessage
+import br.com.fiap.mercadoverde.presentation.screens.cart.viewmodel.CartViewModel
 import br.com.fiap.mercadoverde.presentation.screens.home.state.HomeScreenUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -17,7 +21,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val productService: ProductService
+    private val productService: ProductService,
+    private val cartRepository: CartRepositoryImpl
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeScreenUiState())
@@ -93,13 +98,42 @@ class HomeViewModel @Inject constructor(
     }
 
     fun addToCart(product: Product) {
-        Log.i("HomeViewModel", "addToCart: $product")
         viewModelScope.launch {
 
-            // TODO: Chamar api para adicionar ao cart
-            _snackbarEvent.emit(SnackbarMessage("${product.name} adicionado ao carrinho!", System.currentTimeMillis()))
-        }
+            try {
 
+
+                val productExists = cartRepository.getById(product.id)
+
+                if (productExists == null) {
+                    val cartItem = CartItemEntity(
+                        0,
+                        productId = product.id,
+                        name = product.name,
+                        image = product.image,
+                        quantity = 1,
+                        price = product.price
+                    )
+                    cartRepository.insert(cartItem)
+                    _snackbarEvent.emit(
+                        SnackbarMessage(
+                            "${product.name} adicionado ao carrinho!",
+                            System.currentTimeMillis()
+                        )
+                    )
+                } else {
+                    _snackbarEvent.emit(
+                        SnackbarMessage(
+                            "${product.name} já está no carrinho !!",
+                            System.currentTimeMillis()
+                        )
+                    )
+                }
+            } catch (t: Throwable) {
+                Log.e("HomeViewModel", "Error addToCart: ${t.message}", t)
+
+            }
+        }
     }
 
     private suspend fun loadAllData() {
@@ -133,4 +167,3 @@ class HomeViewModel @Inject constructor(
     }
 }
 
-data class SnackbarMessage(val message: String, val timestamp: Long)

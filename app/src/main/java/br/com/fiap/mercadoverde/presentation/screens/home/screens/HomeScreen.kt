@@ -31,6 +31,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import br.com.fiap.mercadoverde.R
 import br.com.fiap.mercadoverde.presentation.components.CustomTextField
 import br.com.fiap.mercadoverde.presentation.components.MyCircularProgress
+import br.com.fiap.mercadoverde.presentation.screens.cart.viewmodel.CartViewModel
 import br.com.fiap.mercadoverde.presentation.screens.home.composables.CategoryCard
 import br.com.fiap.mercadoverde.presentation.screens.home.composables.ProductCard
 import br.com.fiap.mercadoverde.presentation.screens.home.state.HomeScreenUiState
@@ -42,6 +43,7 @@ import br.com.fiap.mercadoverde.presentation.theme.TextLightColor
 @Composable
 fun HomeScreen(
     homeViewModel: HomeViewModel = hiltViewModel(),
+    cartViewModel: CartViewModel = hiltViewModel(),
     snackbarHostState: SnackbarHostState
 ) {
     val snackbarEvent by homeViewModel.snackbarEvent.collectAsState(initial = null)
@@ -53,13 +55,13 @@ fun HomeScreen(
     }
 
 
-    Content(viewModel = homeViewModel)
+    Content(homeViewModel = homeViewModel, cartViewModel = cartViewModel)
 }
 
 @Composable
-fun Content(viewModel: HomeViewModel) {
+fun Content(homeViewModel: HomeViewModel, cartViewModel: CartViewModel) {
 
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by homeViewModel.uiState.collectAsState()
 
     Column(
         modifier = Modifier
@@ -71,7 +73,7 @@ fun Content(viewModel: HomeViewModel) {
         Spacer(modifier = Modifier.height(12.dp))
 
         Categories(uiState = uiState, onCategoryClick = { categoryName ->
-            viewModel.selectCategory(categoryName)
+            homeViewModel.selectCategory(categoryName)
         })
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -95,7 +97,7 @@ fun Content(viewModel: HomeViewModel) {
                     ProductCard(
                         product = product,
                         onSelectProduct = {
-                            viewModel.addToCart(product)
+                            homeViewModel.addToCart(product)
                         },
                     )
                 }
